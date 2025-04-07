@@ -13,6 +13,10 @@ import ClienteAgendaScreen from './src/presentation/views/cliente-screens/client
 import AbogadoPrincipalScreen from './src/presentation/views/abogado-screens/abogado-principal-screen/AbogadoPrincipalScreen';
 import AbogadoAgendaScreen from './src/presentation/views/abogado-screens/abogado-agenda-screen/AbogadoAgendaScreen';
 import AbogadoFacturaScreen from './src/presentation/views/abogado-screens/abogado-factura-screen/AbogadoFacturaScreen';
+import AbogadoTareaScreen from './src/presentation/views/abogado-screens/abogado-tarea-screen/AbogadoTareaScreen';
+import AbogadoNuevaTareaScreen from './src/presentation/views/abogado-screens/abogado-tarea-screen/abogado-nueva-tarea-screen/AbogadoNuevaTareaScreen';
+import AbogadoProcesosScreen from './src/presentation/views/abogado-screens/abogado-procesos-screen/AbogadoProcesosScreen';
+import AbogadoDetallesProcesoScreen from './src/presentation/views/abogado-screens/abogado-procesos-screen/abogado-detalles-proceso-screen/AbogadoDetallesProcesosScreen';
 import AbogadoNuevaAgendaScreen from './src/presentation/views/abogado-screens/abogado-agenda-screen/abogado-nueva-agenda-screen/AbogadoNuevaAgendaScreen';
 
 export type RootStackParamList = {
@@ -21,8 +25,6 @@ export type RootStackParamList = {
   InicioSesionScreen: undefined;
 
   // Variables Clientes.
-  HomeGeneralScreen: undefined;
-  PrincipalClienteScreen: undefined;
   ClientePrincipalScreen: undefined;
   ClienteAgendaScreen: undefined;
 
@@ -31,6 +33,10 @@ export type RootStackParamList = {
   AbogadoAgendaScreen: undefined;
   AbogadoFacturaScreen: undefined;
   AbogadoNuevaAgendaScreen: undefined;
+  AbogadoTareaScreen: undefined;
+  AbogadoNuevaTareaScreen: undefined;
+  AbogadoProcesosScreen: undefined;
+  AbogadoDetallesProcesoScreen: undefined;
 };
 
 
@@ -95,6 +101,30 @@ const App = () => {
         />
 
         {/* Pagina para crear una nueva agenda del abogado*/}
+        <Stack.Screen
+          name="AbogadoTareaScreen"
+          component={AbogadoTareaScreen}
+        />
+
+        {/* Pagina para crear una nueva agenda del abogado*/}
+        <Stack.Screen
+          name="AbogadoNuevaTareaScreen"
+          component={AbogadoNuevaTareaScreen}
+        />
+
+        {/* Screen para mirar los procesos del abogado*/}
+        <Stack.Screen
+          name="AbogadoProcesosScreen"
+          component={AbogadoProcesosScreen}
+        />
+
+        {/* Screen para mirar los detalles de un proceso del abogado*/}
+        <Stack.Screen
+          name="AbogadoDetallesProcesoScreen"
+          component={AbogadoDetallesProcesoScreen}
+        />
+
+        {/* Screen para crear una nueva cita*/}
         <Stack.Screen
           name="AbogadoNuevaAgendaScreen"
           component={AbogadoNuevaAgendaScreen}
