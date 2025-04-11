@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // Importes de los screens publicos
 import InicioSesionScreen from './src/presentation/views/inicio-screen/InicioSesionScreen';
 import crudscreen from './src/presentation/views/crud/crud_screen';
+import crudedit from './src/presentation/views/crud/crud-edit/crudedit';
 
 // Importes de los Screens del cliente
 import ClientePrincipalScreen from './src/presentation/views/cliente-screens/cliente-principal-screen/ClientePrincipalScreen';
@@ -20,11 +21,13 @@ import AbogadoProcesosScreen from './src/presentation/views/abogado-screens/abog
 import AbogadoDetallesProcesoScreen from './src/presentation/views/abogado-screens/abogado-procesos-screen/abogado-detalles-proceso-screen/AbogadoDetallesProcesosScreen';
 import AbogadoNuevaAgendaScreen from './src/presentation/views/abogado-screens/abogado-agenda-screen/abogado-nueva-agenda-screen/AbogadoNuevaAgendaScreen';
 
+
 export type RootStackParamList = {
 
   // Variables Publicas.
   InicioSesionScreen: undefined;
   crudscreen: undefined;
+  crudedit: undefined 
 
   // Variables Clientes.
   ClientePrincipalScreen: undefined;
@@ -39,12 +42,11 @@ export type RootStackParamList = {
   AbogadoNuevaTareaScreen: undefined;
   AbogadoProcesosScreen: undefined;
   AbogadoDetallesProcesoScreen: undefined;
+
 };
 
 
-const Stack = createNativeStackNavigator <RootStackParamList>
-
-();
+const Stack = createNativeStackNavigator <RootStackParamList>();
 
 
 const App = () => {
@@ -71,7 +73,12 @@ const App = () => {
         component={crudscreen} 
         />
 
-
+        {/* Pagina principal */}
+        <Stack.Screen 
+        name="crudedit" 
+        component={crudedit} 
+        />
+        
 
         {/*_________SCREENS DEL CLIENTE_________*/}
 

@@ -42,7 +42,6 @@ const crudscreen = () => {
                 </View>
             </View>
 
-
             {/* Resto del código (barra de días y lista de citas) */}
             <View style={styles.mesContainer}>
                 <TouchableOpacity onPress={decrementarMes}>
@@ -63,11 +62,6 @@ const crudscreen = () => {
                     </TouchableOpacity>
                 ))}
             </View>
-
-            
-
-
-            
 
             {/* Lista de citas */}
             <ScrollView style={styles.scrollContainer}>
@@ -101,7 +95,6 @@ const crudscreen = () => {
               ))}
             </ScrollView>
            
-
             {/* Botón flotante */}
             <TouchableOpacity
             onPress={() => {
