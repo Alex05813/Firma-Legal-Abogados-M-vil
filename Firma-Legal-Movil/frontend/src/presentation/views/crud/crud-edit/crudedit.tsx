@@ -1,15 +1,43 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../../../../App'
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios'
 
 
-const crudedit   = () => {
+// Define el tipo para los parámetros
+type CrudEditRouteProp = RouteProp<RootStackParamList, 'crudedit'>;
+
+const crudedit = ({ route }: { route: CrudEditRouteProp }) => {
+
+  const [procesos, setProcesos] = useState('')
+
+  const { agendaData } = route.params;
+
+    type NavigationProps = StackNavigationProp<RootStackParamList, 'crudedit'>;
+  const navigation = useNavigation<NavigationProps>();
+
+  const lista_procesos = async () => {
+    try {
+      const process = await axios.get('http://192.168.1.39:9000/api/procesos')
+      setProcesos(process.data)
+    } catch (error) {
+      console.error('Error al obtener los procesos:', error);
+    }
+  };
+  
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
+        <TouchableOpacity 
+          onPress={() => navigation.goBack()} 
+          style={styles.backButton}>
           <Text style={styles.backButtonText}>Volver</Text>
         </TouchableOpacity>
+
         <Text style={styles.title}>Editar Cita</Text>
         <TouchableOpacity style={styles.deleteButton}>
           <Text style={styles.deleteButtonText}>🗑️</Text>
@@ -18,11 +46,13 @@ const crudedit   = () => {
 
       {/* Formulario */}
       <ScrollView contentContainerStyle={styles.formContainer}>
+
         {/* ID Agenda (solo lectura) */}
         <Text style={styles.label}>ID Agenda</Text>
+
         <TextInput
           style={[styles.input, styles.disabledInput]}
-          value="12345"
+          value={agendaData.id_agenda.toString()}
           editable={false}
         />
 
@@ -31,7 +61,7 @@ const crudedit   = () => {
         <TextInput
           style={styles.input}
           placeholder="DD/MM/AAAA"
-          value="01/01/2023"
+          value={agendaData.fecha}
         />
 
         {/* Hora */}
@@ -39,7 +69,7 @@ const crudedit   = () => {
         <TextInput
           style={styles.input}
           placeholder="HH:MM"
-          value="10:00"
+          value={agendaData.hora}
         />
 
         {/* Estado (simulado con botones) */}
@@ -57,7 +87,7 @@ const crudedit   = () => {
         <Text style={styles.label}>ID Proceso</Text>
         <TextInput
           style={styles.input}
-          value="1001"
+          value={agendaData.id_proceso}
           keyboardType="numeric"
         />
 
@@ -67,7 +97,7 @@ const crudedit   = () => {
           style={[styles.input, styles.textArea]}
           multiline
           numberOfLines={4}
-          value="Reunión para revisar documentos legales."
+          value={agendaData.descripcion}
         />
 
         {/* Botones */}

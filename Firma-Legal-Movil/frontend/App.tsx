@@ -27,7 +27,16 @@ export type RootStackParamList = {
   // Variables Publicas.
   InicioSesionScreen: undefined;
   crudscreen: undefined;
-  crudedit: undefined 
+  crudedit: {
+    agendaData: {
+      id_agenda: number;
+      fecha: string;
+      hora: string;
+      estado: string;
+      id_proceso: string;
+      descripcion: string;
+    }
+  }
 
   // Variables Clientes.
   ClientePrincipalScreen: undefined;

@@ -7,7 +7,7 @@ import { crudstyles as styles } from './crud';
 import view from './view';
 
 const crudscreen = () => {
-  type NavigationProps = StackNavigationProp<RootStackParamList, 'crudscreen'>;
+  type NavigationProps = StackNavigationProp<RootStackParamList, 'crudedit'>;
       const navigation = useNavigation<NavigationProps>();
 
       const { incrementarMes,
@@ -67,8 +67,7 @@ const crudscreen = () => {
             <ScrollView style={styles.scrollContainer}>
 
               {agendas.map((agenda) => (
-                <TouchableOpacity
-                onPress={() => navigation.navigate('AbogadoPrincipalScreen')}>
+                <TouchableOpacity>
                 <View key={agenda._id} style={styles.citaCard}>
 
                   {/* Primera fila: Hora (izq) y Fecha (der) */}
@@ -79,6 +78,8 @@ const crudscreen = () => {
 
                   {/* Descripción */}
                   <Text style={styles.descripcion}>{agenda.descripcion}</Text>
+                  <Text style={styles.descripcion}>{agenda.id_agenda}</Text>
+
 
                   {/* Estado */}
                   <View style={styles.filaEstado}>
@@ -88,6 +89,21 @@ const crudscreen = () => {
                     ]}>
                       <Text style={styles.estadoText}>{agenda.estado}</Text>
                     </View>
+
+                    <TouchableOpacity
+                    onPress={() => navigation.navigate('crudedit', { 
+                      agendaData: {
+                        id_agenda: agenda.id_agenda,
+                        fecha: agenda.fecha,
+                        hora: agenda.hora, 
+                        estado: agenda.estado,
+                        id_proceso: agenda.id_proceso,
+                        descripcion: agenda.descripcion
+                      }
+                    })}>
+                    <Text style={styles.hora}>Editar cita</Text>
+                    </TouchableOpacity>
+
                   </View>
                 </View>
                 </TouchableOpacity>
