@@ -20,7 +20,7 @@ const crudscreen = () => {
 
     return (
       <View style={styles.container}>
-            {/* Encabezado ajustado */}
+            {/* Encabezado ajustado de la crud*/}
             <View style={styles.header}>
                 {/* Botón "Volver" en esquina superior izquierda */}
                 <TouchableOpacity
