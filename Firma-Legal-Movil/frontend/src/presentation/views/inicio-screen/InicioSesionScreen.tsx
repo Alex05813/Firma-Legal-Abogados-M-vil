@@ -30,7 +30,7 @@ const navigation = useNavigation<NavigationProps>();
     setPassword('')
   }
 
-  // Mirar errores especificamente
+  // Mirar errores especificamente para depurar codigo
   interface AxiosError {
     message: string;
     response?: {
