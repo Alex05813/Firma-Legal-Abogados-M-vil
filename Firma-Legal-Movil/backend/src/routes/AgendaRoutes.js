@@ -226,9 +226,9 @@ agendaRouter.put(
  *         description: Error interno en el servidor
  */
 agendaRouter.delete(
-  "/:id_agenda",
+  "/:id_agenda" /*
   verifyToken,
-  verifyRole(["asistente"]),
+  verifyRole(["asistente"]),*/,
   validatorHandler(deleteAgendaSchema, "params"),
   eliminarAgenda
 );

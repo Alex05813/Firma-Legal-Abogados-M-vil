@@ -37,9 +37,8 @@ Content-Type: application/json
 ###
 
 ### Eliminar una Agenda
-DELETE http://localhost:9000/api/agendas/
+DELETE http://localhost:9000/api/agendas/2
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1lcm9JZGVudGlmaWNhY2lvbiI6Ijk5OTk5OTk5OTkiLCJub21icmUiOiJBbGV4YW5kZXIiLCJhcGVsbGlkbyI6IlBhcnJhIiwiZW1haWwiOiJhbGV4YW5kZXIucGVyZG9tb0BnbWFpbC5jb20iLCJ0ZWxlZm9ubyI6IjAwMDAwMDAwMDAiLCJub21icmVfcm9sIjoiYXNpc3RlbnRlIiwiaWF0IjoxNzQzNjE4Mjg5LCJleHAiOjE3NDM2MjE4ODl9.68115emA353MdyigsdRQrWJrdJrTgLPflNuj93-LS-g
 
 
 ###

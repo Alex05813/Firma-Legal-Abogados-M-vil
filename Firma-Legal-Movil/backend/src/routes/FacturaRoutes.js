@@ -1,8 +1,20 @@
-import express from 'express';
-import { crearFactura, getFactura, editarFactura, getAllFacturas, eliminarFactura } from '../controllers/FacturaController.js';
-import { createFacturaSchema, updateFacturaSchema, getAllFacturasSchema, getFacturaByIdSchema, deletefacturaSchema } from '../validators/FacturaValidation.js';
-import { validatorHandler } from '../middleware/validator.handler.js';
-import { verifyToken, verifyRole } from '../middleware/Autentication.js'; // Importar middlewares de autenticación
+import express from "express";
+import {
+  crearFactura,
+  getFactura,
+  editarFactura,
+  getAllFacturas,
+  eliminarFactura,
+} from "../controllers/FacturaController.js";
+import {
+  createFacturaSchema,
+  updateFacturaSchema,
+  getAllFacturasSchema,
+  getFacturaByIdSchema,
+  deletefacturaSchema,
+} from "../validators/FacturaValidation.js";
+import { validatorHandler } from "../middleware/validator.handler.js";
+import { verifyToken, verifyRole } from "../middleware/Autentication.js"; // Importar middlewares de autenticación
 
 const facturaRouter = express.Router();
 
@@ -73,7 +85,15 @@ const facturaRouter = express.Router();
  *       500:
  *         description: Error interno en el servidor
  */
-facturaRouter.post('/', verifyToken, verifyRole(['asistente']), validatorHandler(createFacturaSchema, 'body'), crearFactura);
+facturaRouter.post(
+  "/",
+  /*
+  verifyToken,
+  verifyRole(["asistente"]),
+  */
+  validatorHandler(createFacturaSchema, "body"),
+  crearFactura
+);
 
 /**
  * @swagger
@@ -99,7 +119,14 @@ facturaRouter.post('/', verifyToken, verifyRole(['asistente']), validatorHandler
  *       500:
  *         description: Error interno en el servidor
  */
-facturaRouter.get('/:id_factura', verifyToken, verifyRole(['abogado', 'asistente']), validatorHandler(getFacturaByIdSchema, 'params'), getFactura);
+facturaRouter.get(
+  "/:id_factura",
+  /*verifyToken, verifyRole(['abogado', 'asistente']),*/ validatorHandler(
+    getFacturaByIdSchema,
+    "params"
+  ),
+  getFactura
+);
 
 /**
  * @swagger
@@ -116,7 +143,14 @@ facturaRouter.get('/:id_factura', verifyToken, verifyRole(['abogado', 'asistente
  *       500:
  *         description: Error interno en el servidor
  */
-facturaRouter.get('/', /*verifyToken, verifyRole(['asistente']),*/ validatorHandler(getAllFacturasSchema, 'query'), getAllFacturas);
+facturaRouter.get(
+  "/",
+  /*verifyToken, verifyRole(['asistente']),*/ validatorHandler(
+    getAllFacturasSchema,
+    "query"
+  ),
+  getAllFacturas
+);
 
 /**
  * @swagger
@@ -148,7 +182,13 @@ facturaRouter.get('/', /*verifyToken, verifyRole(['asistente']),*/ validatorHand
  *       500:
  *         description: Error interno en el servidor
  */
-facturaRouter.put('/:id_factura', verifyToken, verifyRole(['asistente']), validatorHandler(updateFacturaSchema, 'body'), editarFactura);
+facturaRouter.put(
+  "/:id_factura",
+  verifyToken,
+  verifyRole(["asistente"]),
+  validatorHandler(updateFacturaSchema, "body"),
+  editarFactura
+);
 
 /**
  * @swagger
@@ -174,6 +214,12 @@ facturaRouter.put('/:id_factura', verifyToken, verifyRole(['asistente']), valida
  *       500:
  *         description: Error interno en el servidor
  */
-facturaRouter.delete('/:id_factura', verifyToken, verifyRole(['asistente']), validatorHandler(deletefacturaSchema, 'params'), eliminarFactura);
+facturaRouter.delete(
+  "/:id_factura",
+  verifyToken,
+  verifyRole(["asistente"]),
+  validatorHandler(deletefacturaSchema, "params"),
+  eliminarFactura
+);
 
 export default facturaRouter;
