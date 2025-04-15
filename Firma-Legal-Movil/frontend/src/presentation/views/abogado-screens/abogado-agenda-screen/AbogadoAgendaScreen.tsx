@@ -79,6 +79,7 @@ const AbogadoAgendaScreen = () => {
 
                   {/* Descripción */}
                   <Text style={styles.descripcion}>{agenda.descripcion}</Text>
+                  <Text style={styles.descripcion}>{agenda.id_agenda}</Text>
 
                   {/* Estado */}
                   <View style={styles.filaEstado}>

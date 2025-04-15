@@ -5,6 +5,8 @@ import { RootStackParamList } from '../../../../../../App';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios'
+import { getBaseUrl } from '../../../../../domain/services/getBaseUrl';
+
 
 const AbogadoNuevaAgendaScreen = () => {
 
@@ -58,7 +60,8 @@ const AbogadoNuevaAgendaScreen = () => {
       };
 
       // Realizar la solicitud POST
-      const response = await axios.post('http://192.168.1.39:9000/api/agendas', nuevaCita);
+      const baseUrl = getBaseUrl();
+      const response = await axios.post(`${baseUrl}/agendas`, nuevaCita);
 
       // Mostrar mensaje de éxito
       Alert.alert('Éxito', 'La cita se ha guardado correctamente.');

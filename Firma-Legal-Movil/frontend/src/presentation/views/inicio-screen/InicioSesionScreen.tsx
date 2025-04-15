@@ -8,6 +8,8 @@ import { RootStackParamList } from '../../../../App';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import testGetBaseUrl from '../../../domain/services/test';
+import { getBaseUrl } from '../../../domain/services/getBaseUrl';
 
 const InicioSesionScreen = () => {
   const [email, setEmail] = useState('');
@@ -47,7 +49,8 @@ const navigation = useNavigation<NavigationProps>();
 
     setLoading(true);
     try {
-      const response = await axios.post('http://192.168.1.39:9000/api/autenticacion', {
+      const baseUrl = getBaseUrl();
+      const response = await axios.post(`${baseUrl}/autenticacion`, {
         email,
         password
       }, {
@@ -81,6 +84,7 @@ const navigation = useNavigation<NavigationProps>();
 
 
   return (
+    
     <View style={styles.container}>
       {/* Logo */}
       
