@@ -1,8 +1,20 @@
-import express from 'express';
-import { crearAgenda, getAgenda, getAllAgendas, editarAgenda, eliminarAgenda } from '../controllers/AgendaController.js';
-import { createAgendaSchema, updateAgendaSchema, getAllAgendasSchema, getAgendaByIdSchema, deleteAgendaSchema } from '../validators/AgendaValidation.js';
-import { validatorHandler } from '../middleware/validator.handler.js';
-import { verifyToken, verifyRole } from '../middleware/Autentication.js'; 
+import express from "express";
+import {
+  crearAgenda,
+  getAgenda,
+  getAllAgendas,
+  editarAgenda,
+  eliminarAgenda,
+} from "../controllers/AgendaController.js";
+import {
+  createAgendaSchema,
+  updateAgendaSchema,
+  getAllAgendasSchema,
+  getAgendaByIdSchema,
+  deleteAgendaSchema,
+} from "../validators/AgendaValidation.js";
+import { validatorHandler } from "../middleware/validator.handler.js";
+import { verifyToken, verifyRole } from "../middleware/Autentication.js";
 
 const agendaRouter = express.Router();
 
@@ -88,8 +100,13 @@ const agendaRouter = express.Router();
  *       500:
  *         description: Error interno en el servidor
  */
-agendaRouter.post('/', verifyToken, verifyRole(['asistente']), validatorHandler(createAgendaSchema), crearAgenda);
-
+agendaRouter.post(
+  "/",
+  /*verifyToken, verifyRole(['asistente']),*/ validatorHandler(
+    createAgendaSchema
+  ),
+  crearAgenda
+);
 
 /**
  * @swagger
@@ -115,8 +132,13 @@ agendaRouter.post('/', verifyToken, verifyRole(['asistente']), validatorHandler(
  *       500:
  *         description: Error interno en el servidor
  */
-agendaRouter.get('/:id_agenda', verifyToken, verifyRole(['asistente', 'abogado']), validatorHandler(getAgendaByIdSchema, 'params'), getAgenda);
-
+agendaRouter.get(
+  "/:id_agenda",
+  verifyToken,
+  verifyRole(["asistente", "abogado"]),
+  validatorHandler(getAgendaByIdSchema, "params"),
+  getAgenda
+);
 
 /**
  * @swagger
@@ -133,8 +155,13 @@ agendaRouter.get('/:id_agenda', verifyToken, verifyRole(['asistente', 'abogado']
  *       500:
  *         description: Error interno en el servidor
  */
-agendaRouter.get('/', /*verifyToken, verifyRole(['asistente', 'abogado']),*/ validatorHandler(getAllAgendasSchema), getAllAgendas);
-
+agendaRouter.get(
+  "/",
+  /*verifyToken, verifyRole(['asistente', 'abogado']),*/ validatorHandler(
+    getAllAgendasSchema
+  ),
+  getAllAgendas
+);
 
 /**
  * @swagger
@@ -166,8 +193,13 @@ agendaRouter.get('/', /*verifyToken, verifyRole(['asistente', 'abogado']),*/ val
  *       500:
  *         description: Error interno en el servidor
  */
-agendaRouter.put('/:id_agenda', verifyToken, verifyRole(['asistente']), validatorHandler(updateAgendaSchema), editarAgenda);
-
+agendaRouter.put(
+  "/:id_agenda",
+  verifyToken,
+  verifyRole(["asistente"]),
+  validatorHandler(updateAgendaSchema),
+  editarAgenda
+);
 
 /**
  * @swagger
@@ -193,6 +225,12 @@ agendaRouter.put('/:id_agenda', verifyToken, verifyRole(['asistente']), validato
  *       500:
  *         description: Error interno en el servidor
  */
-agendaRouter.delete('/:id_agenda', verifyToken, verifyRole(['asistente']), validatorHandler(deleteAgendaSchema, 'params'), eliminarAgenda);
+agendaRouter.delete(
+  "/:id_agenda",
+  verifyToken,
+  verifyRole(["asistente"]),
+  validatorHandler(deleteAgendaSchema, "params"),
+  eliminarAgenda
+);
 
 export default agendaRouter;

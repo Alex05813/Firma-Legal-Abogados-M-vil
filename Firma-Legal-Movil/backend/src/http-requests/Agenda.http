@@ -3,10 +3,10 @@ POST http://localhost:9000/api/agendas
 Content-Type: application/json
 
 {
-  "id_agenda": 1,
-  "fecha": "2024-12-01T10:00:00Z",
-  "hora": "2024-12-01T10:00:00Z",
-  "descripcion": "Reunión importante",
+  "id_agenda": 8,
+  "fecha": "2025-08-12T10:00:00Z",
+  "hora": "12:00",
+  "descripcion": "cita ip redireccion",
   "estado": "programada",
   "id_proceso": 1
 }
