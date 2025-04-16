@@ -56,7 +56,7 @@ const AbogadoNuevaAgendaScreen = () => {
         hora: form.hora,
         descripcion: form.descripcion,
         estado: form.estado.toLowerCase(), // Convertimos a minúsculas
-        id_proceso: parseInt(form.id_proceso), // Convertimos a número
+        id_proceso: form.id_proceso, // Convertimos a número
       };
 
       // Realizar la solicitud POST

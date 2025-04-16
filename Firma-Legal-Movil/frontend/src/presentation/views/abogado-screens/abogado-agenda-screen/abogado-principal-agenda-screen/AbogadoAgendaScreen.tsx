@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../../../App';
+import { RootStackParamList } from '../../../../../../App';
 import { useNavigation } from '@react-navigation/native';
 import { AbogadoAgendaScreenStyle as styles } from './abogado_agenda_screen_styles';
 import AbogadoAgendaViewModel from './viewAbogadoAgendaScreenModel';
@@ -39,7 +39,7 @@ const AbogadoAgendaScreen = () => {
                     <Text style={styles.title}>Agendamiento Abogado</Text>
                     <Text style={styles.date}>{dia}</Text>
                     <Image
-                        source={require('../../../../../assets/calendar.png')}
+                        source={require('../../../../../../assets/calendar.png')}
                         style={styles.calendarIcon}
                     />
                 </View>
@@ -48,13 +48,16 @@ const AbogadoAgendaScreen = () => {
 
             {/* Resto del código (barra de días y lista de citas) */}
             <View style={styles.mesContainer}>
+
                 <TouchableOpacity onPress={decrementarMes}>
                     <Text>{'<'}</Text>
                 </TouchableOpacity>
+
                 <Text>{nombreMesActual}</Text>
                 <TouchableOpacity onPress={incrementarMes}>
                     <Text>{'>'}</Text>
                 </TouchableOpacity>
+
             </View>
 
 
@@ -69,7 +72,7 @@ const AbogadoAgendaScreen = () => {
 
 
             <ScrollView style={styles.scrollContainer}>
-              {agendas.map((agenda) => (
+            {Array.isArray(agendas) && agendas.map((agenda) => (
                 <View key={agenda._id} style={styles.citaCard}>
                   {/* Primera fila: Hora (izq) y Fecha (der) */}
                   <View style={styles.filaSuperior}>

@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
+import {useState, useEffect} from 'react'
 import axios from 'axios'
+import { getBaseUrl } from '../../../domain/services/getBaseUrl';
 
 // Definir la interfaz para las agendas
 interface Agenda {
@@ -23,7 +23,8 @@ const view = () => {
         useEffect(() => {
           const fetchAgendas = async () => {
               try {
-                  const response = await axios.get('http://192.168.1.39:9000/api/agendas');
+                const baseUrl = getBaseUrl();
+                  const response = await axios.get(`${baseUrl}/agendas`);
                   setAgendas(response.data); // Almacena las agendas en el estado
               } catch (error) {
                   console.error('Error al obtener las agendas:', error);

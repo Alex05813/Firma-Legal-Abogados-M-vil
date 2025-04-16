@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
-import { getBaseUrl } from '../../../../domain/services/getBaseUrl';
-
-// Definir la interfaz para las agendas
+import { getBaseUrl } from '../../../../../domain/services/getBaseUrl';// Definir la interfaz para las agendas
 interface Agenda {
     _id: string;
     id_agenda: number;
@@ -10,9 +8,12 @@ interface Agenda {
     hora: string;
     descripcion: string;
     estado: string;
-    id_proceso: string;
     createdAt: string;
     updatedAt: string;
+    __v?: number;
+    numeroIdentificacionAbogado?: string;
+    numeroIdentificacionCliente?: string;
+    procesoDescripcion?: string;
   }
 
 const AbogadoAgendaViewModel = () => {
@@ -25,13 +26,15 @@ const AbogadoAgendaViewModel = () => {
               try {
                 const baseUrl = getBaseUrl();
                   const response = await axios.get(`${baseUrl}/agendas`);
-                  setAgendas(response.data); // Almacena las agendas en el estado
+                  setAgendas(response.data.agendasConProceso || []);                   
+                  console.log('agendas', response.data); // Verifica la respuesta
+                  
               } catch (error) {
                   console.error('Error al obtener las agendas:', error);
               }
           };
       
-          fetchAgendas();
+          fetchAgendas(); 
       }, []);
 
       const incrementarMes = () => {

@@ -5,11 +5,11 @@ import {
   getAllAgendas,
   editarAgenda,
   eliminarAgenda,
+  getAgendasByIdentificacionAbogado,
 } from "../controllers/AgendaController.js";
 import {
   createAgendaSchema,
   updateAgendaSchema,
-  getAllAgendasSchema,
   getAgendaByIdSchema,
   deleteAgendaSchema,
 } from "../validators/AgendaValidation.js";
@@ -108,6 +108,11 @@ agendaRouter.post(
   crearAgenda
 );
 
+agendaRouter.get(
+  "/abogado/:numeroIdentificacionAbogado",
+  getAgendasByIdentificacionAbogado
+);
+
 /**
  * @swagger
  * /api/agendas/{id_agenda}:
@@ -134,8 +139,9 @@ agendaRouter.post(
  */
 agendaRouter.get(
   "/:id_agenda",
+  /*
   verifyToken,
-  verifyRole(["asistente", "abogado"]),
+  verifyRole(["asistente", "abogado"]),*/
   validatorHandler(getAgendaByIdSchema, "params"),
   getAgenda
 );
@@ -157,9 +163,7 @@ agendaRouter.get(
  */
 agendaRouter.get(
   "/",
-  /*verifyToken, verifyRole(['asistente', 'abogado']),*/ validatorHandler(
-    getAllAgendasSchema
-  ),
+  /*verifyToken, verifyRole(['asistente', 'abogado']),*/
   getAllAgendas
 );
 
@@ -195,8 +199,9 @@ agendaRouter.get(
  */
 agendaRouter.put(
   "/:id_agenda",
+  /*
   verifyToken,
-  verifyRole(["asistente"]),
+  verifyRole(["asistente"]),*/
   validatorHandler(updateAgendaSchema),
   editarAgenda
 );

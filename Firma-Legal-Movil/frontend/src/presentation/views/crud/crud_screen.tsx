@@ -7,7 +7,7 @@ import { crudstyles as styles } from './crud';
 import view from './view';
 
 const crudscreen = () => {
-  type NavigationProps = StackNavigationProp<RootStackParamList, 'crudedit'>;
+  type NavigationProps = StackNavigationProp<RootStackParamList, 'crudscreen'>;
       const navigation = useNavigation<NavigationProps>();
 
       const { incrementarMes,
@@ -67,7 +67,6 @@ const crudscreen = () => {
             <ScrollView style={styles.scrollContainer}>
 
               {agendas.map((agenda) => (
-                <TouchableOpacity>
                 <View key={agenda._id} style={styles.citaCard}>
 
                   {/* Primera fila: Hora (izq) y Fecha (der) */}
@@ -106,7 +105,6 @@ const crudscreen = () => {
 
                   </View>
                 </View>
-                </TouchableOpacity>
 
               ))}
             </ScrollView>

@@ -13,7 +13,7 @@ import ClienteAgendaScreen from './src/presentation/views/cliente-screens/client
 
 // Importes de los screens del abogado
 import AbogadoPrincipalScreen from './src/presentation/views/abogado-screens/abogado-principal-screen/AbogadoPrincipalScreen';
-import AbogadoAgendaScreen from './src/presentation/views/abogado-screens/abogado-agenda-screen/AbogadoAgendaScreen';
+import AbogadoAgendaScreen from './src/presentation/views/abogado-screens/abogado-agenda-screen/abogado-principal-agenda-screen/AbogadoAgendaScreen';
 import AbogadoFacturaScreen from './src/presentation/views/abogado-screens/abogado-factura-screen/AbogadoFacturaScreen';
 import AbogadoTareaScreen from './src/presentation/views/abogado-screens/abogado-tarea-screen/AbogadoTareaScreen';
 import AbogadoNuevaTareaScreen from './src/presentation/views/abogado-screens/abogado-tarea-screen/abogado-nueva-tarea-screen/AbogadoNuevaTareaScreen';
