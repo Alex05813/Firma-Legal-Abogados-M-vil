@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, ToastAndroid } from 'react-native';
-
 import { FontAwesome } from '@expo/vector-icons';
 import { InicioSesionScreenStyle as styles } from './inicio_sesion_screen_styles';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -8,8 +7,18 @@ import { RootStackParamList } from '../../../../App';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import testGetBaseUrl from '../../../domain/services/test';
 import { getBaseUrl } from '../../../domain/services/getBaseUrl';
+import {jwtDecode} from 'jwt-decode';
+
+// Define la estructura de tu token:
+interface CustomJwtPayload {
+  numeroIdentificacion: string;
+  nombre: string;
+  apellido: string;
+  email: string;
+  telefono: string;
+  nombre_rol: string;
+}
 
 const InicioSesionScreen = () => {
   const [email, setEmail] = useState('');
@@ -62,12 +71,19 @@ const navigation = useNavigation<NavigationProps>();
 
       if (response.data?.token) {
         await AsyncStorage.setItem('userToken', response.data.token);
+        const decodedToken = jwtDecode<CustomJwtPayload>(response.data.token); // Decodificar el token
+        const numero_identificacion = decodedToken.numeroIdentificacion; // Asegúrate de que 'id' sea la clave correcta en el token
+        console.log('Número de identificación obtenido en el Inicio de sesion:', numero_identificacion); // Aquí puedes usar el ID como necesites
         ToastAndroid.show('¡Inicio de sesión exitoso!', ToastAndroid.SHORT);
-        navigation.navigate('AbogadoPrincipalScreen');
-        limpiar_formulario()
-      } else {
+        
+        navigation.navigate('AbogadoPrincipalScreen',{
+          numIdentificacion: numero_identificacion,
+        });
+        limpiar_formulario();
+        
+    } else {
         ToastAndroid.show('Error: Formato de respuesta inesperado', ToastAndroid.SHORT);
-      }
+    }
     } catch (error) {
     const axiosError = error as AxiosError; // Type assertion
       console.error("Error detallado:", {

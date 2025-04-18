@@ -52,17 +52,17 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1lcm9JZGVudGlmaWNhY2lv
 
 
 ### Actualizar un usuario
-PUT http://localhost:9000/api/usuarios/9999999999
+PUT http://localhost:9000/api/usuarios/2289897019
 Content-Type: application/json
 
 {
-  "numeroIdentificacion": "9999999999",
-  "nombres": "Alexander",
-  "apellidos": "Parra",
-  "telefono": "0000000000",
-  "email": "alexander.perdomo@gmail.com",
-  "password": "segura123",
-  "id_rol": "2"
+  "numeroIdentificacion": "2289897019",
+  "nombres": "Leonardo",
+  "apellidos": "PaRivasrra",
+  "telefono": "3027887963",
+  "email": "leo@gmail.com",
+  "password": "leo123",
+  "id_rol": "1"
 }
 
 ### Eliminar un usuario

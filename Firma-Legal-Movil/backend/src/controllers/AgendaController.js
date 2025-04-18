@@ -240,6 +240,7 @@ export const getAgendasByIdentificacionAbogado = async (req, res) => {
     );
 
     res.status(200).json(agendasConProceso);
+    console.log("AGENDAMIENTO CON CITAS UBICADAS CON NUMERO DE IDENTIFICACION");
   } catch (error) {
     console.error(error);
     res.status(500).json({

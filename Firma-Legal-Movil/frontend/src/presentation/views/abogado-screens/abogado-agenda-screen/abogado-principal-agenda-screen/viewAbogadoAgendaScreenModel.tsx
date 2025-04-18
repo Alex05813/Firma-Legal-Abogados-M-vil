@@ -1,6 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { getBaseUrl } from '../../../../../domain/services/getBaseUrl';// Definir la interfaz para las agendas
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../../../../App';
+import { useNavigation } from '@react-navigation/native';
+
 interface Agenda {
     _id: string;
     id_agenda: number;
@@ -16,22 +21,35 @@ interface Agenda {
     procesoDescripcion?: string;
   }
 
+  type AbogadoAgendaRouteProp = RouteProp<RootStackParamList, 'AbogadoAgendaScreen'>;
+  
+
 const AbogadoAgendaViewModel = () => {
+    const route = useRoute<AbogadoAgendaRouteProp>();
+    const { numIdentificacion2 } = route.params; // Extrae el parámetro
+
+
     const [agendas, setAgendas] = useState<Agenda[]>([]); // Tipar el estado con la interfaz Agenda
       const [error, setError] = useState<string | null>(null);
       const [mesActual, setMesActual] = useState(new Date().getMonth()); // Estado para el mes actual
     
         useEffect(() => {
+          console.log('numero de identificacion del view:', numIdentificacion2); // Verifica el valor del parámetro
+          
           const fetchAgendas = async () => {
               try {
                 const baseUrl = getBaseUrl();
-                  const response = await axios.get(`${baseUrl}/agendas`);
+                  const response = await axios.get(`${baseUrl}/agendas/abogado/${numIdentificacion2}`); // Cambia la URL según tu API
                   setAgendas(response.data.agendasConProceso || []);                   
-                  console.log('agendas', response.data); // Verifica la respuesta
-                  
+                  // Verifica la estructura de response.data
+                  console.log('Respuesta completa:', response.data);                  
+
+                  // Asegúrate de que estás extrayendo correctamente las agendas
+                  const agendasData = response.data.agendasConProceso || response.data || [];
+                  setAgendas(agendasData);
               } catch (error) {
-                  console.error('Error al obtener las agendas:', error);
-              }
+                console.error('Error al obtener las agendas:', error);
+                setError("Error al cargar citas");              }
           };
       
           fetchAgendas(); 

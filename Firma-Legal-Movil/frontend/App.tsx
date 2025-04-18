@@ -43,8 +43,13 @@ export type RootStackParamList = {
   ClienteAgendaScreen: undefined;
 
   // Variables Abogado.
-  AbogadoPrincipalScreen: undefined;
-  AbogadoAgendaScreen: undefined;
+  AbogadoPrincipalScreen: {
+    numIdentificacion: string; // ¡Añade esta línea!
+  };
+    AbogadoAgendaScreen: {
+      numIdentificacion2: string; // Parametro para la busqueda de citas
+    }
+
   AbogadoFacturaScreen: undefined;
   AbogadoNuevaAgendaScreen: undefined;
   AbogadoTareaScreen: undefined;
@@ -54,9 +59,7 @@ export type RootStackParamList = {
 
 };
 
-
 const Stack = createNativeStackNavigator <RootStackParamList>();
-
 
 const App = () => {
   return (

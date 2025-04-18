@@ -18,6 +18,7 @@ import { AbogadoPrincialScreenStyles as styles } from './principal_abogado_scree
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../../App';
 import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useRoute } from '@react-navigation/native';
 
 interface CheckboxItem {
   id: string;
@@ -51,7 +52,12 @@ interface FileData {
   mimeType: string;
 }
 
+type AbogadoPrincipalRouteProp = RouteProp<RootStackParamList, 'AbogadoPrincipalScreen'>;
+
 const HomeScreen: React.FC = () => {
+  const route = useRoute<AbogadoPrincipalRouteProp>();
+  const { numIdentificacion } = route.params; // Extrae el parámetro
+  
   type NavigationProps = StackNavigationProp<RootStackParamList, 'AbogadoPrincipalScreen'>;
           const navigation = useNavigation<NavigationProps>();
   const [profile, setProfile] = useState<UserProfile>({
@@ -251,7 +257,11 @@ const HomeScreen: React.FC = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
+
+
   return (
+    console.log('Parametro del numero de identificacion:', numIdentificacion), // Aquí puedes usar el ID como necesites;
+  
     <ScrollView style={styles.container}>
       {/* Encabezado con menú */}
       <View style={styles.header}>
@@ -360,7 +370,9 @@ const HomeScreen: React.FC = () => {
       <TouchableOpacity 
           style={styles.summaryCapsule}
           onPress={() => {
-            navigation.navigate('AbogadoAgendaScreen')
+            navigation.navigate('AbogadoAgendaScreen',{
+              numIdentificacion2: numIdentificacion,
+            })
             setShowTaskModal(true)
           }}>
           <Text style={styles.capsuleTitle}>📌 Agenda</Text>

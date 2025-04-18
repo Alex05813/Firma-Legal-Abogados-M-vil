@@ -6,7 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 import { AbogadoAgendaScreenStyle as styles } from './abogado_agenda_screen_styles';
 import AbogadoAgendaViewModel from './viewAbogadoAgendaScreenModel';
 
+
+
 const AbogadoAgendaScreen = () => {
+
   type NavigationProps = StackNavigationProp<RootStackParamList, 'AbogadoAgendaScreen'>;
       const navigation = useNavigation<NavigationProps>();
 
@@ -21,6 +24,9 @@ const AbogadoAgendaScreen = () => {
           error,
           dia,} = AbogadoAgendaViewModel()
 
+          console.log('Agendas a renderizar:', agendas);
+console.log('Número de citas:', agendas.length);
+
     return (
       <View style={styles.container}>
             {/* Encabezado ajustado */}
@@ -28,7 +34,7 @@ const AbogadoAgendaScreen = () => {
                 {/* Botón "Volver" en esquina superior izquierda */}
                 <TouchableOpacity
                 onPress={()=>{
-                    navigation.navigate('AbogadoPrincipalScreen')
+                    navigation.goBack()
                 }}
                 style={styles.backButtonContainer}>
                 <Text style={styles.backButton}>Volver</Text>
@@ -70,14 +76,13 @@ const AbogadoAgendaScreen = () => {
                 ))}
             </View>
 
-
             <ScrollView style={styles.scrollContainer}>
             {Array.isArray(agendas) && agendas.map((agenda) => (
                 <View key={agenda._id} style={styles.citaCard}>
                   {/* Primera fila: Hora (izq) y Fecha (der) */}
                   <View style={styles.filaSuperior}>
                     <Text style={styles.hora}>{agenda.hora}</Text>
-                    <Text style={styles.fecha}>{agenda.fecha}</Text>
+                    <Text style={styles.fecha}>{new Date(agenda.fecha).toLocaleDateString('es-ES')}</Text>
                   </View>
 
                   {/* Descripción */}

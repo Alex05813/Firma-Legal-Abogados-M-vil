@@ -6,9 +6,11 @@ import Constants from 'expo-constants';
 let baseUrl = '';
 
 export const getBaseUrl = (): string => {
+  
   if (baseUrl) {
     return baseUrl;
   }
+
   try {
     const manifest = Constants.manifest || Constants.expoConfig || {};
     // debuggerHost is usually in the format "192.168.1.39:19000"
