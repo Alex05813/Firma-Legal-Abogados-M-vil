@@ -1,19 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../../../../App'
+import { RootStackParamList } from '../../../../../../App'
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { crud_styles as styles } from './crud-edit-styles';
-import { formatDateForInput } from '../../../../utils/dateHelpers';
+import { formatDateForInput } from '../../../../../utils/dateHelpers';
 import { Picker } from '@react-native-picker/picker'; // Asegúrate de instalar primero
 import axios from 'axios'
-import { getBaseUrl } from '../../../../domain/services/getBaseUrl';
-import { Proceso } from '../../../../domain/models/procesos/interface-procesos';
+import { AbogadoEditarAgendaScreenStyle as styles } from './abogado_editar_agenda_screen_styles';
+import { getBaseUrl } from '../../../../../domain/services/getBaseUrl';
+import { Proceso } from '../../../../../domain/models/procesos/interface-procesos';
 
 // Define el tipo para los parámetros
 type CrudEditRouteProp = RouteProp<RootStackParamList, 'crudedit'>;
-
 
 const crudedit = ({ route }: { route: CrudEditRouteProp }) => {
   const { agendaData } = route.params;
@@ -149,7 +148,8 @@ const crudedit = ({ route }: { route: CrudEditRouteProp }) => {
           // Encuentra el proceso seleccionado por su _id
           const procesoSeleccionado = procesos.find((proceso: Proceso) => proceso._id === itemValue);
           // Actualiza el estado con la descripción del proceso seleccionado
-          setSelectedProceso(procesoSeleccionado ? procesoSeleccionado.descripcion : '');          console.log('Selección cambiada a:', itemValue);
+          setSelectedProceso(procesoSeleccionado ? procesoSeleccionado.descripcion : '');          
+          console.log('Selección cambiada a:', itemValue);
           console.log('Selección cambiada a:', procesoSeleccionado?.descripcion);
         }}
         style={styles.picker}

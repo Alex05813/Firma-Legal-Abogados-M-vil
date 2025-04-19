@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 // Estilos (puros, sin lógica)
-export const crud_styles = StyleSheet.create({
+export const AbogadoEditarAgendaScreenStyle = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#F9FAFB',

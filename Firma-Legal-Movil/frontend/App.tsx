@@ -23,6 +23,7 @@ import AbogadoNuevaAgendaScreen from './src/presentation/views/abogado-screens/a
 
 
 export type RootStackParamList = {
+  
 
   // Variables Publicas.
   InicioSesionScreen: undefined;
@@ -30,11 +31,11 @@ export type RootStackParamList = {
   crudedit: {
     agendaData: {
       id_agenda: number;
-      fecha: string;
+      fecha: string | Date;
       hora: string;
       estado: string;
-      id_proceso: string;
       descripcion: string;
+      procesoDescripcion?: string;
     }
   }
 

@@ -6,26 +6,23 @@ import { useNavigation } from '@react-navigation/native';
 import { AbogadoAgendaScreenStyle as styles } from './abogado_agenda_screen_styles';
 import AbogadoAgendaViewModel from './viewAbogadoAgendaScreenModel';
 
-
-
 const AbogadoAgendaScreen = () => {
 
   type NavigationProps = StackNavigationProp<RootStackParamList, 'AbogadoAgendaScreen'>;
       const navigation = useNavigation<NavigationProps>();
 
-      const { incrementarMes,
-          decrementarMes,
-          nombreMesActual,
-          diasSemana,
-          numerosDias,
-          fechaActual,
-          mes,
-          agendas,
-          error,
-          dia,} = AbogadoAgendaViewModel()
+      const { 
+        incrementarMes,
+        decrementarMes,
+        nombreMesActual,
+        diasSemana,
+        numerosDias,
+        agendas,
+        dia,} 
+        = AbogadoAgendaViewModel()
 
           console.log('Agendas a renderizar:', agendas);
-console.log('Número de citas:', agendas.length);
+            console.log('Número de citas:', agendas.length);
 
     return (
       <View style={styles.container}>
@@ -51,7 +48,6 @@ console.log('Número de citas:', agendas.length);
                 </View>
             </View>
 
-
             {/* Resto del código (barra de días y lista de citas) */}
             <View style={styles.mesContainer}>
 
@@ -65,7 +61,6 @@ console.log('Número de citas:', agendas.length);
                 </TouchableOpacity>
 
             </View>
-
 
             <View style={styles.diasContainer}>
                 {diasSemana.map((dia, index) => (
@@ -102,7 +97,6 @@ console.log('Número de citas:', agendas.length);
               ))}
             </ScrollView>
 
-
             {/* Botón flotante */}
             <TouchableOpacity
             onPress={() => {
@@ -114,6 +108,5 @@ console.log('Número de citas:', agendas.length);
         </View>
     );
 };
-
 
 export default AbogadoAgendaScreen;

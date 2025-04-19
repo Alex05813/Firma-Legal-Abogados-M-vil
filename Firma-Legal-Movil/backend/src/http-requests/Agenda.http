@@ -9,7 +9,7 @@ Content-Type: application/json
   "descripcion": "cita ip asdasdasd",
   "estado": "programada",
   "id_proceso": 6
-}s
+}
 ###
 
 ### Obtener todas las agendas de la base

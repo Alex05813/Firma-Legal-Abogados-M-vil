@@ -5,6 +5,7 @@ import { RootStackParamList } from '../../../../App';
 import { useNavigation } from '@react-navigation/native';
 import { crudstyles as styles } from './crud';
 import view from './view';
+import { Agenda } from '../../../domain/models/agenda/interface-agenda';
 
 const crudscreen = () => {
   type NavigationProps = StackNavigationProp<RootStackParamList, 'crudscreen'>;
@@ -25,7 +26,8 @@ const crudscreen = () => {
                 {/* Botón "Volver" en esquina superior izquierda */}
                 <TouchableOpacity
                 onPress={()=>{
-                    navigation.navigate('AbogadoPrincipalScreen')
+                    // navigation.navigate('AbogadoPrincipalScreen')
+                    navigation.goBack()
                 }}
                 style={styles.backButtonContainer}>
                 <Text style={styles.backButton}>Volver</Text>
@@ -66,17 +68,30 @@ const crudscreen = () => {
             {/* Lista de citas */}
             <ScrollView style={styles.scrollContainer}>
 
-              {agendas.map((agenda) => (
+             {Array.isArray(agendas) && agendas.map((agenda: Agenda) => (
                 <View key={agenda._id} style={styles.citaCard}>
 
                   {/* Primera fila: Hora (izq) y Fecha (der) */}
                   <View style={styles.filaSuperior}>
                     <Text style={styles.hora}>{agenda.hora}</Text>
-                    <Text style={styles.fecha}>{agenda.fecha}</Text>
+                    <Text style={styles.fecha}> {typeof agenda.fecha === 'string' ? agenda.fecha : agenda.fecha.toISOString()}</Text>
                   </View>
+
+                  
 
                   {/* Descripción */}
                   <Text style={styles.descripcion}>{agenda.descripcion}</Text>
+                  {/* Nueva sección: Descripción del proceso */}
+                    {agenda.procesoDescripcion && (
+                      <View style={styles.procesoContainer}>
+                        <Text style={styles.procesoTitle}>Proceso:</Text>
+                        <Text style={styles.procesoDescripcion}>
+                          {agenda.procesoDescripcion.length > 50 
+                            ? `${agenda.procesoDescripcion.substring(0, 50)}...` 
+                            : agenda.procesoDescripcion}
+                        </Text>
+                      </View>
+                    )}
                   <Text style={styles.descripcion}>{agenda.id_agenda}</Text>
 
 
@@ -96,8 +111,8 @@ const crudscreen = () => {
                         fecha: agenda.fecha,
                         hora: agenda.hora, 
                         estado: agenda.estado,
-                        id_proceso: agenda.id_proceso,
-                        descripcion: agenda.descripcion
+                        descripcion: agenda.descripcion,
+                        procesoDescripcion: agenda.procesoDescripcion , // Asegúrate de que este campo sea opcional
                       }
                     })}>
                     <Text style={styles.hora}>Editar cita</Text>
@@ -120,6 +135,5 @@ const crudscreen = () => {
         </View>
     );
 };
-
 
 export default crudscreen;

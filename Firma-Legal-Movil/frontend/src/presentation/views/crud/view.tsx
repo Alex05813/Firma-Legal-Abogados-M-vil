@@ -25,7 +25,10 @@ const view = () => {
               try {
                 const baseUrl = getBaseUrl();
                   const response = await axios.get(`${baseUrl}/agendas`);
-                  setAgendas(response.data); // Almacena las agendas en el estado
+                  console.log('AGENDAS OBTENIDAS DE LA CRUD:', response.data, 'URL INTERCEPTADA POR LA CRUD', baseUrl); // Verifica la respuesta
+
+                  const agendasData = response.data.agendasConProceso || response.data || [];
+                  setAgendas(agendasData);
               } catch (error) {
                   console.error('Error al obtener las agendas:', error);
               }
