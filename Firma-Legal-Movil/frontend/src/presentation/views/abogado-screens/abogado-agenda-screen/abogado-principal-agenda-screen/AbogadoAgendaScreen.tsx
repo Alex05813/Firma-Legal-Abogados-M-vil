@@ -5,6 +5,7 @@ import { RootStackParamList } from '../../../../../../App';
 import { useNavigation } from '@react-navigation/native';
 import { AbogadoAgendaScreenStyle as styles } from './abogado_agenda_screen_styles';
 import AbogadoAgendaViewModel from './viewAbogadoAgendaScreenModel';
+import { Agenda } from '../../../../../domain/models/agenda/interface-agenda';
 
 const AbogadoAgendaScreen = () => {
 
@@ -72,7 +73,7 @@ const AbogadoAgendaScreen = () => {
             </View>
 
             <ScrollView style={styles.scrollContainer}>
-            {Array.isArray(agendas) && agendas.map((agenda) => (
+             {Array.isArray(agendas) && agendas.map((agenda: Agenda) => (
                 <View key={agenda._id} style={styles.citaCard}>
                   {/* Primera fila: Hora (izq) y Fecha (der) */}
                   <View style={styles.filaSuperior}>
@@ -92,6 +93,19 @@ const AbogadoAgendaScreen = () => {
                     ]}>
                       <Text style={styles.estadoText}>{agenda.estado}</Text>
                     </View>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('AbogadoEditarAgendaScreen', { 
+                        agendaData: {
+                          id_agenda: agenda.id_agenda,
+                          fecha: agenda.fecha,
+                          hora: agenda.hora, 
+                          estado: agenda.estado,
+                          descripcion: agenda.descripcion,
+                          procesoDescripcion: agenda.procesoDescripcion , // Asegúrate de que este campo sea opcional
+                        }
+                      })}>
+                      <Text style={styles.hora}>Editar cita</Text>
+                      </TouchableOpacity>
                   </View>
                 </View>
               ))}

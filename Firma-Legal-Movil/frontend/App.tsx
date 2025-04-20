@@ -1,3 +1,5 @@
+
+
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -20,6 +22,7 @@ import AbogadoNuevaTareaScreen from './src/presentation/views/abogado-screens/ab
 import AbogadoProcesosScreen from './src/presentation/views/abogado-screens/abogado-procesos-screen/AbogadoProcesosScreen';
 import AbogadoDetallesProcesoScreen from './src/presentation/views/abogado-screens/abogado-procesos-screen/abogado-detalles-proceso-screen/AbogadoDetallesProcesosScreen';
 import AbogadoNuevaAgendaScreen from './src/presentation/views/abogado-screens/abogado-agenda-screen/abogado-nueva-agenda-screen/AbogadoNuevaAgendaScreen';
+import AbogadoEditarAgendaScreen from './src/presentation/views/abogado-screens/abogado-agenda-screen/abogado-editar-agenda-screen/AbogadoEditarAgendaScreen';
 
 
 export type RootStackParamList = {
@@ -57,6 +60,16 @@ export type RootStackParamList = {
   AbogadoNuevaTareaScreen: undefined;
   AbogadoProcesosScreen: undefined;
   AbogadoDetallesProcesoScreen: undefined;
+  AbogadoEditarAgendaScreen: {
+    agendaData: {
+      id_agenda: number;
+      fecha: string | Date;
+      hora: string;
+      estado: string;
+      descripcion: string;
+      procesoDescripcion?: string;
+    }
+  };
 
 };
 
@@ -160,6 +173,11 @@ const App = () => {
           component={AbogadoNuevaAgendaScreen}
         />
 
+        {/* Screen para crear una nueva cita*/}
+        <Stack.Screen
+          name="AbogadoEditarAgendaScreen"
+          component={AbogadoEditarAgendaScreen}
+        />
 
       </Stack.Navigator>
     </NavigationContainer>

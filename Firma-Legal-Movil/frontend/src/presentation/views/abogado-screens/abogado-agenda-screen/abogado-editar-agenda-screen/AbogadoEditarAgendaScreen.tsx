@@ -10,46 +10,25 @@ import axios from 'axios'
 import { AbogadoEditarAgendaScreenStyle as styles } from './abogado_editar_agenda_screen_styles';
 import { getBaseUrl } from '../../../../../domain/services/getBaseUrl';
 import { Proceso } from '../../../../../domain/models/procesos/interface-procesos';
+import AbogadoEditarAgendaViewModel from './viewAbogadoEditarAgendaScreenModel';
 
 // Define el tipo para los parámetros
-type CrudEditRouteProp = RouteProp<RootStackParamList, 'crudedit'>;
+type AbogadoEditAgendaRouteProp = RouteProp<RootStackParamList, 'AbogadoEditarAgendaScreen'>;
 
-const crudedit = ({ route }: { route: CrudEditRouteProp }) => {
+const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRouteProp }) => {
   const { agendaData } = route.params;
   const navigation = useNavigation<NavigationProps>();
-  type NavigationProps = StackNavigationProp<RootStackParamList, 'crudedit'>;
-  // estados
-  const [selectedProceso, setSelectedProceso] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState(agendaData.estado || 'Programada');
-  const [procesos, setProcesos] = useState<Proceso[]>([]);
-
-  const lista_procesos = async () => {
-    try {
-      const baseurl = getBaseUrl();
-      const process = await axios.get(`${baseurl}/procesos`);
-      setProcesos(process.data)
-      console.log('LISTA DE PROCESOS OBTENIDOS DE LA APIIIII:', process.data);
-    } catch (error) {
-      console.error('Error al obtener los procesos:', error);
-    }
-  };
-
-      // / Efecto para sincronizar con los datos iniciales
-    useEffect(() => {
-      setSelectedStatus(agendaData.estado || 'Programada');
-      lista_procesos()
-    }, [agendaData.estado]);
-
-    // Función para cambiar el estado - VERSIÓN MODIFICADA
-    const handleStatusChange = (status: string) => {
-      setSelectedStatus(status);
-      console.log('Estado seleccionado:', status); // ← Esto muestra en consola
-      
-    // Aquí podrías también actualizar agendaData.estado si necesitas
-    // Por ejemplo:
-    // agendaData.estado = status;
-    // console.log('Datos actualizados:', agendaData);
-  };
+  type NavigationProps = StackNavigationProp<RootStackParamList, 'AbogadoEditarAgendaScreen'>;
+  const {
+    selectedProceso,
+        setSelectedProceso,
+        selectedStatus,
+        setSelectedStatus,
+        procesos,
+        setProcesos,
+        lista_procesos,
+        handleStatusChange,
+  } = AbogadoEditarAgendaViewModel({ route });
   
   return (
     // lista_procesos(),
@@ -131,14 +110,7 @@ const crudedit = ({ route }: { route: CrudEditRouteProp }) => {
         </TouchableOpacity>
       </View>
 
-      {/* ID Agenda (solo lectura) */}
-      <Text style={styles.label}>Proceso actual</Text>
-
-        <TextInput
-          style={[styles.input, styles.disabledInput]}
-          value={agendaData.procesoDescripcion || ''}
-          editable={false}
-        />
+     
       
       <Text style={styles.label}>Proceso a seleccionar</Text>
       <View style={styles.pickerContainer}>
@@ -199,4 +171,4 @@ const crudedit = ({ route }: { route: CrudEditRouteProp }) => {
   );
 };
 
-export default crudedit ;
+export default AbogadoEditarAgendaScreen ;
