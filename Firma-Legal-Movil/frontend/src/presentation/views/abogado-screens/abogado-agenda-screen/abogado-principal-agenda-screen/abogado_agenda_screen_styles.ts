@@ -171,5 +171,24 @@ export const AbogadoAgendaScreenStyle = StyleSheet.create({
         width: 30,
         height: 30,
       },
+      procesoContainer: {
+        marginVertical: 8,
+        padding: 8,
+        backgroundColor: '#f5f5f5',
+        borderRadius: 5,
+        borderLeftWidth: 3,
+        borderLeftColor: '#3a7bd5',
+      },
+      procesoTitle: {
+        fontWeight: '600',
+        color: '#333',
+        fontSize: 14,
+        marginBottom: 4,
+      },
+      procesoDescripcion: {
+        color: '#555',
+        fontSize: 13,
+        lineHeight: 18,
+      },
       
 });

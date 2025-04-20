@@ -81,8 +81,19 @@ const AbogadoAgendaScreen = () => {
                     <Text style={styles.fecha}>{new Date(agenda.fecha).toLocaleDateString('es-ES')}</Text>
                   </View>
 
-                  {/* Descripción */}
+                 {/* Descripción */}
                   <Text style={styles.descripcion}>{agenda.descripcion}</Text>
+                  {/* Nueva sección: Descripción del proceso */}
+                    {agenda.procesoDescripcion && (
+                      <View style={styles.procesoContainer}>
+                        <Text style={styles.procesoTitle}>Proceso:</Text>
+                        <Text style={styles.procesoDescripcion}>
+                          {agenda.procesoDescripcion.length > 50 
+                            ? `${agenda.procesoDescripcion.substring(0, 50)}...` 
+                            : agenda.procesoDescripcion}
+                        </Text>
+                      </View>
+                    )}
                   <Text style={styles.descripcion}>{agenda.id_agenda}</Text>
 
                   {/* Estado */}

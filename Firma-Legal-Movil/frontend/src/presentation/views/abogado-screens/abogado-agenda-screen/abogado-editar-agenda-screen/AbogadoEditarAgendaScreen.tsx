@@ -23,12 +23,27 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
     selectedProceso,
         setSelectedProceso,
         selectedStatus,
-        setSelectedStatus,
         procesos,
-        setProcesos,
-        lista_procesos,
         handleStatusChange,
   } = AbogadoEditarAgendaViewModel({ route });
+
+  const [editarproceso, setEditarProceso] = useState<Proceso[]>([])
+      
+  const editar_proceso = async () => {
+    try {
+      const baseurl = getBaseUrl();
+      const editar_proceso = await axios.put(`${baseurl}/procesos/${agendaData.id_agenda}`,{
+        id_agenda: agendaData.id_agenda,
+        id_proceso: selectedProceso,
+        estado: selectedStatus,
+        fecha: agendaData.fecha,
+        hora: agendaData.hora,
+        descripcion: agendaData.descripcion,
+      });
+    } catch (error) {
+      console.log('Error al editar el proceso:', error);
+    }
+  }
   
   return (
     // lista_procesos(),
@@ -63,7 +78,7 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
         <Text style={styles.label}>Dia de la cita</Text>
         <TextInput
           style={styles.input}
-          value={formatDateForInput(agendaData.fecha)}
+          value={new Date(agendaData.fecha).toLocaleDateString('es-ES')}
         />
 
         {/* Hora */}
@@ -144,8 +159,8 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
         multiline
         numberOfLines={4}
         value={selectedProceso} // Muestra la descripción del proceso seleccionado
-        editable={false} // Opcional: Haz que el campo no sea editable si solo quieres mostrar la descripción
-      />
+        editable={false}
+        />
 
 
         {/* Descripción */}

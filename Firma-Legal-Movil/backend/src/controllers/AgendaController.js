@@ -219,7 +219,7 @@ export const getAgendasByIdentificacionAbogado = async (req, res) => {
     const agendasConProceso = await Promise.all(
       agendas.map(async (agenda) => {
         const proceso = procesos.find(
-          (p) => p.id_proceso === agenda.id_proceso
+          (p) => String(p.id_proceso) === String(agenda.id_proceso) // ← Conversión a string
         );
         return {
           _id: agenda._id,
@@ -228,9 +228,9 @@ export const getAgendasByIdentificacionAbogado = async (req, res) => {
           hora: agenda.hora,
           descripcion: agenda.descripcion,
           estado: agenda.estado,
-          procesoDescripcion: proceso ? proceso.descripcion : null,
-          // numeroIdentificacionCliente:
-          //   proceso?.numeroIdentificacionCliente || null,
+          procesoDescripcion:
+            proceso && proceso.descripcion ? proceso.descripcion : "", // numeroIdentificacionCliente:
+          // proceso?.numeroIdentificacionCliente || null,
           numeroIdentificacionAbogado: numeroIdentificacionAbogado,
           createdAt: agenda.createdAt,
           updatedAt: agenda.updatedAt,
@@ -241,6 +241,16 @@ export const getAgendasByIdentificacionAbogado = async (req, res) => {
 
     res.status(200).json(agendasConProceso);
     console.log("AGENDAMIENTO CON CITAS UBICADAS CON NUMERO DE IDENTIFICACION");
+    // Agrega esto después de encontrar los procesos:
+    console.log(
+      "Descripciones de procesos:",
+      procesos.map((p) => p.descripcion)
+    );
+    console.log("IDs de Procesos:", idsProcesos);
+    console.log(
+      "IDs en Agendas:",
+      agendas.map((a) => a.id_proceso)
+    );
   } catch (error) {
     console.error(error);
     res.status(500).json({

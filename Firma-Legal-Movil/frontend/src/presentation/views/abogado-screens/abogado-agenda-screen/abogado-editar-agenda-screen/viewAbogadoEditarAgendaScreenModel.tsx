@@ -40,12 +40,7 @@ const AbogadoEditarAgendaViewModel = ({ route }: { route: AbogadoEditAgendaRoute
         // Función para cambiar el estado - VERSIÓN MODIFICADA
         const handleStatusChange = (status: string) => {
           setSelectedStatus(status);
-          console.log('Estado seleccionado:', status); // ← Esto muestra en consola
-          
-        // Aquí podrías también actualizar agendaData.estado si necesitas
-        // Por ejemplo:
-        // agendaData.estado = status;
-        // console.log('Datos actualizados:', agendaData);
+          console.log('Estado seleccionado:', status); 
       };
       return {
         selectedProceso,

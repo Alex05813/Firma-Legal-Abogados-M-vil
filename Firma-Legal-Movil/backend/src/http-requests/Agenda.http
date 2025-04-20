@@ -18,7 +18,7 @@ Content-Type: application/json
 ###
 
 ### Obtener todas las agendas especializadamente de un abogado
-GET http://localhost:9000/api/agendas/abogado/1029144521
+GET http://localhost:9000/api/agendas/abogado/2289897019
 Content-Type: application/json
 ###
 
