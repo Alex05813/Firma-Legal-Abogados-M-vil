@@ -23,12 +23,12 @@ Content-Type: application/json
 ###
 
 ### Editar una Agenda
-PUT http://localhost:9000/api/agendas/3
+PUT http://localhost:9000/api/agendas/1
 Content-Type: application/json
 
 {
-  "fecha": "2025-08-15T10:00:00Z",
-  "descripcion": "cita ip asdasdasd",
+  "fecha": "12/12/2025",
+  "descripcion": "Reunión importante actualizada por segunda",
   "estado": "cancelada"
 }
 ###

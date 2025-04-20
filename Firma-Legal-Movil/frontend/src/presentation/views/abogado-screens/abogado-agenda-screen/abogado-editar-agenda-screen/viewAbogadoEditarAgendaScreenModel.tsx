@@ -19,6 +19,18 @@ const AbogadoEditarAgendaViewModel = ({ route }: { route: AbogadoEditAgendaRoute
       const [selectedProceso, setSelectedProceso] = useState('');
       const [selectedStatus, setSelectedStatus] = useState(agendaData.estado || 'Programada');
       const [procesos, setProcesos] = useState<Proceso[]>([]);
+      const [editarproceso, setEditarProceso] = useState<Proceso[]>([])
+      
+            // const editar_proceso = async () => {
+            //   try {
+            //     const baseurl = getBaseUrl();
+            //     const editar_processo = await axios.put(`${baseurl}/procesos/${agendaData.id_agenda}`, {
+                
+            //   } catch (error) {
+                
+            //   }
+            // }
+            // }
     
       const lista_procesos = async () => {
         try {
@@ -37,7 +49,7 @@ const AbogadoEditarAgendaViewModel = ({ route }: { route: AbogadoEditAgendaRoute
           lista_procesos()
         }, [agendaData.estado]);
     
-        // Función para cambiar el estado - VERSIÓN MODIFICADA
+        // Función para cambiar el estado 
         const handleStatusChange = (status: string) => {
           setSelectedStatus(status);
           console.log('Estado seleccionado:', status); 
