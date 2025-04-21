@@ -3,12 +3,12 @@ POST http://localhost:9000/api/agendas
 Content-Type: application/json
 
 {
-  "id_agenda": 2,
+  "id_agenda": 7,
   "fecha": "2025-08-12T10:00:00Z",
   "hora": "12:00",
   "descripcion": "cita ip asdasdasd",
   "estado": "programada",
-  "id_proceso": 6
+  "id_proceso": 1
 }
 ###
 
@@ -18,23 +18,23 @@ Content-Type: application/json
 ###
 
 ### Obtener todas las agendas especializadamente de un abogado
-GET http://localhost:9000/api/agendas/abogado/2289897019
+GET http://localhost:9000/api/agendas/abogado/1029144521
 Content-Type: application/json
 ###
 
 ### Editar una Agenda
-PUT http://localhost:9000/api/agendas/1
+PUT http://localhost:9000/api/agendas/2
 Content-Type: application/json
 
 {
-  "fecha": "12/12/2025",
-  "descripcion": "Reunión importante actualizada por segunda",
-  "estado": "cancelada"
+  "fecha": "2025/03/11",
+  "id_proceso": 1,
+  "descripcion": "Cita de juan"
 }
 ###
 
 ### Eliminar una Agenda
-DELETE http://localhost:9000/api/agendas/2
+DELETE http://localhost:9000/api/agendas/8
 Content-Type: application/json
 ###
 

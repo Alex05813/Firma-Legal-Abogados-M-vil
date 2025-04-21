@@ -113,6 +113,7 @@ const AbogadoAgendaScreen = () => {
                           estado: agenda.estado,
                           descripcion: agenda.descripcion,
                           procesoDescripcion: agenda.procesoDescripcion , // Asegúrate de que este campo sea opcional
+                          id_proceso: agenda.id_proceso, // Asegúrate de que este campo sea opcional
                         }
                       })}>
                       <Text style={styles.hora}>Editar cita</Text>

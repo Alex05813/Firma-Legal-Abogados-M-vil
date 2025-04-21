@@ -27,7 +27,7 @@ export interface Agenda {
     procesoDescripcion?: string;
     numeroIdentificacionCliente?: string;
     numeroIdentificacionAbogado?: string;
-    id_proceso?: string; // El ? la hace opcional
+    id_proceso?: number; // El ? la hace opcional
     createdAt?: string;
     updatedAt?: string;
   }

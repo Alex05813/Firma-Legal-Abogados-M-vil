@@ -68,9 +68,9 @@ export type RootStackParamList = {
       estado: string;
       descripcion: string;
       procesoDescripcion?: string;
+      id_proceso?: number; // Asegúrate de que este campo sea opcional
     }
   };
-
 };
 
 const Stack = createNativeStackNavigator <RootStackParamList>();

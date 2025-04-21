@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, ScrollView, Platform } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../../../../../App'
 import { useNavigation } from '@react-navigation/native';
@@ -11,7 +11,11 @@ import { AbogadoEditarAgendaScreenStyle as styles } from './abogado_editar_agend
 import { getBaseUrl } from '../../../../../domain/services/getBaseUrl';
 import { Proceso } from '../../../../../domain/models/procesos/interface-procesos';
 import AbogadoEditarAgendaViewModel from './viewAbogadoEditarAgendaScreenModel';
-
+import DateTimePicker, {
+  DateTimePickerEvent,
+  AndroidNativeProps,
+  IOSNativeProps
+} from '@react-native-community/datetimepicker';
 // Define el tipo para los parámetros
 type AbogadoEditAgendaRouteProp = RouteProp<RootStackParamList, 'AbogadoEditarAgendaScreen'>;
 
@@ -19,31 +23,76 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
   const { agendaData } = route.params;
   const navigation = useNavigation<NavigationProps>();
   type NavigationProps = StackNavigationProp<RootStackParamList, 'AbogadoEditarAgendaScreen'>;
+
+  // Estados para los campos editables
+  const [fecha, setFecha] = useState(new Date(agendaData.fecha || Date.now()));
+  const [showDatePicker, setShowDatePicker] = useState(false);  
+  const [hora, setHora] = useState(agendaData.hora);
+  const [descripcion, setDescripcion] = useState(agendaData.descripcion);
+
   const {
     selectedProceso,
-        setSelectedProceso,
-        selectedStatus,
-        procesos,
-        handleStatusChange,
+    setSelectedProceso,
+    selectedStatus,
+    procesos,
+    handleStatusChange,
   } = AbogadoEditarAgendaViewModel({ route });
 
-  const [editarproceso, setEditarProceso] = useState<Proceso[]>([])
-      
+  const handleDateChange = (
+    event: DateTimePickerEvent, 
+    selectedDate: Date | undefined
+  ) => {
+    setShowDatePicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      setFecha(selectedDate);
+    }
+  };
+
+  // Formateador de fecha para mostrar
+  const formatDisplayDate = (date: Date) => {
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).replace(/\//g, '/');
+  };
+
   const editar_proceso = async () => {
     try {
       const baseurl = getBaseUrl();
-      const editar_proceso = await axios.put(`${baseurl}/procesos/${agendaData.id_agenda}`,{
-        id_agenda: agendaData.id_agenda,
-        id_proceso: selectedProceso,
-        estado: selectedStatus,
-        fecha: agendaData.fecha,
-        hora: agendaData.hora,
-        descripcion: agendaData.descripcion,
-      });
-    } catch (error) {
-      console.log('Error al editar el proceso:', error);
+      // 1. Preparar el objeto de datos a enviar
+    const datosActualizados: any = {
+      fecha: fecha.toISOString(), // Envía en formato "2025-04-12T00:00:00.000Z"
+      hora: hora.endsWith(':00') ? hora : `${hora}:00`,
+      descripcion,
+      estado: selectedStatus,
+      id_proceso: Number(selectedProceso) // Conversión explícita
+    };
+
+    console.log("Datos COMPLETOS a enviar:", datosActualizados);
+
+    // 2. Solo agregar id_proceso si tiene un valor numérico válido
+    if (selectedProceso && !isNaN(Number(selectedProceso))) {
+      datosActualizados.id_proceso = Number(selectedProceso);
     }
-  }
+      // 3. Enviar la solicitud
+      const response = await axios.put(`${baseurl}/agendas/${agendaData.id_agenda}`, datosActualizados);
+    console.log("Respuesta del servidor:", response.data);
+      navigation.goBack();
+    } catch (error) {
+
+      if (axios.isAxiosError(error)) {
+        console.log('Error del backend:', error.response?.data);
+      }
+      console.log("Datos enviados:", {
+        fecha: fecha.toISOString(),
+        hora,
+        descripcion,
+        estado: selectedStatus,
+        id_proceso: selectedProceso || 'No enviado' // Para debug
+      });
+    }
+  };
   
   return (
     // lista_procesos(),
@@ -75,18 +124,35 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
         />
 
         {/* Fecha */}
-        <Text style={styles.label}>Dia de la cita</Text>
-        <TextInput
-          style={styles.input}
-          value={new Date(agendaData.fecha).toLocaleDateString('es-ES')}
+        {/* Campo de fecha mejorado */}
+        <View>
+      <Text style={styles.label}>Fecha de la cita</Text>
+      
+      <TouchableOpacity 
+        onPress={() => setShowDatePicker(true)}
+        style={styles.dateInputContainer}
+      >
+        <Text style={styles.dateText}>{formatDisplayDate(fecha)}</Text>
+      </TouchableOpacity>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={fecha}
+          mode="date"
+          display={Platform.OS === 'android' ? 'calendar' : 'spinner'}
+          locale="es-ES"
+          onChange={handleDateChange}
         />
+      )}
+    </View>
 
         {/* Hora */}
         <Text style={styles.label}>Hora</Text>
         <TextInput
           style={styles.input}
           placeholder="HH:MM"
-          value={agendaData.hora}
+          value={hora}
+          onChangeText={setHora}
         />
 
         {/* Estado (simulado con botones) */}
@@ -95,12 +161,12 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
         <TouchableOpacity 
           style={[
             styles.radioButton, 
-            selectedStatus === 'Programada' && styles.radioButtonSelected
+            selectedStatus === 'programada' && styles.radioButtonSelected
           ]}
-          onPress={() => handleStatusChange('Programada')}
+          onPress={() => handleStatusChange('programada')}
         >
           <Text style={
-            selectedStatus === 'Programada' 
+            selectedStatus === 'programada' 
               ? styles.radioButtonTextSelected 
               : styles.radioButtonText
           }>
@@ -111,12 +177,12 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
         <TouchableOpacity 
           style={[
             styles.radioButton, 
-            selectedStatus === 'Cancelada' && styles.radioButtonSelected
+            selectedStatus === 'cancelada' && styles.radioButtonSelected
           ]}
-          onPress={() => handleStatusChange('Cancelada')}
+          onPress={() => handleStatusChange('cancelada')}
         >
           <Text style={
-            selectedStatus === 'Cancelada' 
+            selectedStatus === 'cancelada' 
               ? styles.radioButtonTextSelected 
               : styles.radioButtonText
           }>
@@ -129,28 +195,32 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
       
       <Text style={styles.label}>Proceso a seleccionar</Text>
       <View style={styles.pickerContainer}>
+
       <Picker
-        selectedValue={selectedProceso}
-        onValueChange={(itemValue) => { 
-          // Encuentra el proceso seleccionado por su _id
-          const procesoSeleccionado = procesos.find((proceso: Proceso) => proceso._id === itemValue);
-          // Actualiza el estado con la descripción del proceso seleccionado
-          setSelectedProceso(procesoSeleccionado ? procesoSeleccionado.descripcion : '');          
-          console.log('Selección cambiada a:', itemValue);
-          console.log('Selección cambiada a:', procesoSeleccionado?.descripcion);
-        }}
-        style={styles.picker}
-        dropdownIconColor="#007AFF"
-      >
-        <Picker.Item label="Seleccione un proceso..." value="" />
-        {Array.isArray(procesos) && procesos.map((proceso: Proceso) => (
-          <Picker.Item 
-            key={proceso._id} 
-            label={`${proceso.tipo} - ${proceso.descripcion}`} 
-            value={proceso._id} 
-          />
-        ))}
-      </Picker>
+  selectedValue={selectedProceso !== null ? selectedProceso.toString() : ""}
+  onValueChange={(itemValue) => { 
+    if (itemValue === "") {
+      setSelectedProceso(null);
+    } else {
+      const procesoSeleccionado = procesos.find((p: Proceso) => 
+        p.id_proceso.toString() === itemValue
+      );
+      setSelectedProceso(procesoSeleccionado ? procesoSeleccionado.id_proceso : null);
+      console.log('ID Proceso seleccionado:', procesoSeleccionado?.id_proceso);
+    }
+  }}
+  style={styles.picker}
+  dropdownIconColor="#007AFF"
+>
+  <Picker.Item label="Seleccione un proceso..." value="" />
+  {Array.isArray(procesos) && procesos.map((proceso: Proceso) => (
+    <Picker.Item 
+      key={proceso._id} 
+      label={`${proceso.tipo} - ${proceso.descripcion}`} 
+      value={proceso.id_proceso.toString()}
+    />
+  ))}
+</Picker>
       </View>
 
       <Text style={styles.label}>Proceso Elegido</Text>
@@ -158,9 +228,13 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
         style={[styles.input, styles.textArea]}
         multiline
         numberOfLines={4}
-        value={selectedProceso} // Muestra la descripción del proceso seleccionado
+        value={
+          selectedProceso !== null 
+            ? procesos.find(p => p.id_proceso === selectedProceso)?.descripcion || ''
+            : 'Ningún proceso seleccionado'
+        }
         editable={false}
-        />
+      />
 
 
         {/* Descripción */}
@@ -169,15 +243,19 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
           style={[styles.input, styles.textArea]}
           multiline
           numberOfLines={4}
-          value={agendaData.descripcion}
+          value={descripcion}
+          onChangeText={setDescripcion}
         />
 
         {/* Botones */}
         <View style={styles.buttonGroup}>
-          <TouchableOpacity style={[styles.button, styles.cancelButton]}>
+          <TouchableOpacity style={[styles.button, styles.cancelButton]}
+          onPress={() => navigation.goBack()}>
             <Text style={styles.buttonText}>Cancelar</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.saveButton]}>
+
+          <TouchableOpacity style={[styles.button, styles.saveButton]}
+          onPress={editar_proceso}>
             <Text style={styles.buttonText}>Guardar</Text>
           </TouchableOpacity>
         </View>

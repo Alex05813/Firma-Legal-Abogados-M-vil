@@ -1,8 +1,16 @@
-import express from 'express';
-import { crearAbogado, getAbogado, updateAbogado } from '../controllers/AbogadoController.js';
-import { createAbogadoSchema, updateAbogadoSchema, getAbogadoSchema } from '../validators/AbogadoValidation.js';
-import { validatorHandler } from '../middleware/validator.handler.js'; 
-import { verifyToken, verifyRole } from '../middleware/Autentication.js'; 
+import express from "express";
+import {
+  crearAbogado,
+  getAbogado,
+  updateAbogado,
+} from "../controllers/AbogadoController.js";
+import {
+  createAbogadoSchema,
+  updateAbogadoSchema,
+  getAbogadoSchema,
+} from "../validators/AbogadoValidation.js";
+import { validatorHandler } from "../middleware/validator.handler.js";
+import { verifyToken, verifyRole } from "../middleware/Autentication.js";
 
 const Abogadorouter = express.Router();
 
@@ -80,7 +88,13 @@ const Abogadorouter = express.Router();
  *       500:
  *         description: Error interno en el servidor
  */
-Abogadorouter.post('/', verifyToken, verifyRole(['asistente']), validatorHandler(createAbogadoSchema), crearAbogado);
+Abogadorouter.post(
+  "/",
+  verifyToken,
+  verifyRole(["asistente"]),
+  validatorHandler(createAbogadoSchema),
+  crearAbogado
+);
 
 /**
  * @swagger
@@ -104,7 +118,13 @@ Abogadorouter.post('/', verifyToken, verifyRole(['asistente']), validatorHandler
  *       500:
  *         description: Error interno en el servidor
  */
-Abogadorouter.get('/:numeroIdentificacion', verifyToken, verifyRole(['asistente']), validatorHandler(getAbogadoSchema), getAbogado);
+Abogadorouter.get(
+  "/:numeroIdentificacion",
+  /*verifyToken, verifyRole(['asistente']),*/ validatorHandler(
+    getAbogadoSchema
+  ),
+  getAbogado
+);
 
 /**
  * @swagger
@@ -138,6 +158,12 @@ Abogadorouter.get('/:numeroIdentificacion', verifyToken, verifyRole(['asistente'
  *       500:
  *         description: Error interno en el servidor
  */
-Abogadorouter.put('/:numeroIdentificacion', verifyToken, verifyRole(['asistente']), validatorHandler(updateAbogadoSchema), updateAbogado);
+Abogadorouter.put(
+  "/:numeroIdentificacion",
+  verifyToken,
+  verifyRole(["asistente"]),
+  validatorHandler(updateAbogadoSchema),
+  updateAbogado
+);
 
 export default Abogadorouter;

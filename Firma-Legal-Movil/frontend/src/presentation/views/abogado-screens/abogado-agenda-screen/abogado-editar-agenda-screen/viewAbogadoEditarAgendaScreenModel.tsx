@@ -16,7 +16,9 @@ type AbogadoEditAgendaRouteProp = RouteProp<RootStackParamList, 'AbogadoEditarAg
 const AbogadoEditarAgendaViewModel = ({ route }: { route: AbogadoEditAgendaRouteProp }) => {
     const { agendaData } = route.params;
       // estados
-      const [selectedProceso, setSelectedProceso] = useState('');
+      const [selectedProceso, setSelectedProceso] = useState<number | null>(
+        agendaData.id_proceso ? Number(agendaData.id_proceso) : null
+      );      
       const [selectedStatus, setSelectedStatus] = useState(agendaData.estado || 'Programada');
       const [procesos, setProcesos] = useState<Proceso[]>([]);
       const [editarproceso, setEditarProceso] = useState<Proceso[]>([])

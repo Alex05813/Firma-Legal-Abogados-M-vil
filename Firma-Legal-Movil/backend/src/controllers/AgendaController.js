@@ -44,6 +44,7 @@ export const crearAgenda = async (req, res) => {
 
 // Controlador para editar una agenda
 export const editarAgenda = async (req, res) => {
+  console.log("Cuerpo de la petición (req.body):", req.body); // <--- Aquí la depuración
   try {
     const { id_agenda } = req.params;
     const { fecha, hora, descripcion, estado, id_proceso } = req.body;

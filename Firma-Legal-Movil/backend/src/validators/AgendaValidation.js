@@ -54,6 +54,11 @@ export const updateAgendaSchema = Joi.object({
   estado: Joi.string().valid("programada", "cancelada").optional().messages({
     "any.only": 'El estado debe ser "programada" o "cancelada".',
   }),
+
+  // Añade la validación para id_proceso
+  id_proceso: Joi.number().optional().messages({
+    "number.base": "El ID del proceso debe ser un número.",
+  }),
 });
 
 // Esquema de validación para obtener una agenda por ID

@@ -115,4 +115,14 @@ radioGroup: {
       fontSize: 16,
       fontWeight: 'bold',
     },
+    dateInputContainer: {
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 5,
+      padding: 15,
+      marginBottom: 15,
+    },
+    dateText: {
+      fontSize: 16,
+    },
   });

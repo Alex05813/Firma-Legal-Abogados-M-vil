@@ -31,7 +31,7 @@ const agendaSchema = new mongoose.Schema(
     },
 
     id_proceso: {
-      type: String,
+      type: Number,
       required: true,
       ref: Proceso,
     },
