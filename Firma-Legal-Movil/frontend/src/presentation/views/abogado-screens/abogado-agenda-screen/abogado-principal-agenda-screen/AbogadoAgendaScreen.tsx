@@ -22,8 +22,12 @@ const AbogadoAgendaScreen = () => {
         dia,} 
         = AbogadoAgendaViewModel()
 
-          console.log('Agendas a renderizar:', agendas);
-            console.log('Número de citas:', agendas.length);
+        // Depuracion
+        console.log('Agendas a renderizar:', agendas);
+        console.log('Número de citas:', agendas.length);
+        console.log('Valor de nombreMesActual:', nombreMesActual);
+        console.log('Valor de diasSemana:', diasSemana);
+        console.log('Valor de numerosDias:', numerosDias);
 
     return (
       <View style={styles.container}>
@@ -40,7 +44,7 @@ const AbogadoAgendaScreen = () => {
                
                 {/* Título y fecha centrados */}
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Agendamiento Abogado</Text>
+                    <Text style={styles.title}>Tu Agenda de Citas</Text>
                     <Text style={styles.date}>{dia}</Text>
                     <Image
                         source={require('../../../../../../assets/calendar.png')}
@@ -51,23 +55,30 @@ const AbogadoAgendaScreen = () => {
 
             {/* Resto del código (barra de días y lista de citas) */}
             <View style={styles.mesContainer}>
-
                 <TouchableOpacity onPress={decrementarMes}>
                     <Text>{'<'}</Text>
                 </TouchableOpacity>
 
-                <Text>{nombreMesActual}</Text>
+                {/* Validación para asegurar que nombreMesActual sea una cadena válida */}
+                <Text>{typeof nombreMesActual === 'string' && nombreMesActual.trim() !== '' ? nombreMesActual : 'Mes desconocido'}</Text>
+                
                 <TouchableOpacity onPress={incrementarMes}>
                     <Text>{'>'}</Text>
                 </TouchableOpacity>
-
             </View>
 
             <View style={styles.diasContainer}>
                 {diasSemana.map((dia, index) => (
                     <TouchableOpacity key={index} style={styles.diaItem}>
-                        <Text style={styles.diaText}>{dia}</Text>
-                        <Text style={styles.numeroDiaText}>{numerosDias[index]}</Text> {/* Mostrar el número del día */}
+                      {/* Validación para asegurar que 'dia' sea un texto válido */}
+                      <Text style={styles.diaText}>{typeof dia === 'string' && dia.trim() !== '' ? dia : 'Día'}</Text>
+                      
+                      {/* Validación para asegurar que 'numerosDias[index]' sea un número o texto válido */}
+                      {/* <Text style={styles.numeroDiaText}>
+                          {typeof numerosDias[index] === 'number' || typeof numerosDias[index] === 'string' 
+                              ? numerosDias[index] 
+                              : ''}
+                      </Text> */}
                     </TouchableOpacity>
                 ))}
             </View>
@@ -94,7 +105,9 @@ const AbogadoAgendaScreen = () => {
                         </Text>
                       </View>
                     )}
-                  <Text style={styles.descripcion}>{agenda.id_agenda}</Text>
+                    
+                    {/* Mostrar el id de la cita opcional para depuracion */}
+                  {/* <Text style={styles.descripcion}>{agenda.id_agenda}</Text> */}
 
                   {/* Estado */}
                   <View style={styles.filaEstado}>

@@ -6,8 +6,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // Importes de los screens publicos
 import InicioSesionScreen from './src/presentation/views/inicio-screen/InicioSesionScreen';
-import crudscreen from './src/presentation/views/crud/crud_screen';
-import crudedit from './src/presentation/views/crud/crud-edit/crudedit';
 
 // Importes de los Screens del cliente
 import ClientePrincipalScreen from './src/presentation/views/cliente-screens/cliente-principal-screen/ClientePrincipalScreen';
@@ -16,13 +14,19 @@ import ClienteAgendaScreen from './src/presentation/views/cliente-screens/client
 // Importes de los screens del abogado
 import AbogadoPrincipalScreen from './src/presentation/views/abogado-screens/abogado-principal-screen/AbogadoPrincipalScreen';
 import AbogadoAgendaScreen from './src/presentation/views/abogado-screens/abogado-agenda-screen/abogado-principal-agenda-screen/AbogadoAgendaScreen';
-import AbogadoFacturaScreen from './src/presentation/views/abogado-screens/abogado-factura-screen/AbogadoFacturaScreen';
 import AbogadoTareaScreen from './src/presentation/views/abogado-screens/abogado-tarea-screen/AbogadoTareaScreen';
 import AbogadoNuevaTareaScreen from './src/presentation/views/abogado-screens/abogado-tarea-screen/abogado-nueva-tarea-screen/AbogadoNuevaTareaScreen';
 import AbogadoProcesosScreen from './src/presentation/views/abogado-screens/abogado-procesos-screen/AbogadoProcesosScreen';
 import AbogadoDetallesProcesoScreen from './src/presentation/views/abogado-screens/abogado-procesos-screen/abogado-detalles-proceso-screen/AbogadoDetallesProcesosScreen';
 import AbogadoNuevaAgendaScreen from './src/presentation/views/abogado-screens/abogado-agenda-screen/abogado-nueva-agenda-screen/AbogadoNuevaAgendaScreen';
 import AbogadoEditarAgendaScreen from './src/presentation/views/abogado-screens/abogado-agenda-screen/abogado-editar-agenda-screen/AbogadoEditarAgendaScreen';
+import AbogadoDetalleTareaScreen from './src/presentation/views/abogado-screens/abogado-tarea-screen/AbogadoDetalleTareaScreen';
+import CasesScreen from './src/presentation/views/abogado-screens/abogado-procesos-screen/CasesScreen';
+import CaseDetailScreen from './src/presentation/views/abogado-screens/abogado-procesos-screen/CaseDetailScreen';
+import { Tarea } from './src/types';
+import AbogadoEditarTareaScreen from './src/presentation/views/abogado-screens/abogado-tarea-screen/AbogadoEditarTareaScreen';
+import UpdateProcessScreen from './src/presentation/views/abogado-screens/abogado-procesos-screen/UpdateProcessScreen';
+import FacturasScreen from './src/presentation/views/abogado-screens/abogado-factura-screen/FacturasScreen';
 
 
 export type RootStackParamList = {
@@ -30,17 +34,6 @@ export type RootStackParamList = {
 
   // Variables Publicas.
   InicioSesionScreen: undefined;
-  crudscreen: undefined;
-  crudedit: {
-    agendaData: {
-      id_agenda: number;
-      fecha: string | Date;
-      hora: string;
-      estado: string;
-      descripcion: string;
-      procesoDescripcion?: string;
-    }
-  }
 
   // Variables Clientes.
   ClientePrincipalScreen: undefined;
@@ -48,19 +41,26 @@ export type RootStackParamList = {
 
   // Variables Abogado.
   AbogadoPrincipalScreen: {
-    numIdentificacion: string; // ¡Añade esta línea!
+    numIdentificacion: string; 
   };
     AbogadoAgendaScreen: {
       numIdentificacion2: string; // Parametro para la busqueda de citas
     }
 
-  AbogadoFacturaScreen: undefined;
   AbogadoNuevaAgendaScreen: undefined;
-  AbogadoTareaScreen: undefined;
+  AbogadoTareaScreen:{ 
+    refresh?: boolean;
+     newTaskId?: number; 
+    };
+
   AbogadoNuevaTareaScreen: undefined;
   AbogadoProcesosScreen: undefined;
   AbogadoDetallesProcesoScreen: undefined;
-  AbogadoEditarAgendaScreen: {
+  AbogadoDetalleTareaScreen: { 
+    tarea: Tarea 
+  };
+
+    AbogadoEditarAgendaScreen: {
     agendaData: {
       id_agenda: number;
       fecha: string | Date;
@@ -71,6 +71,24 @@ export type RootStackParamList = {
       id_proceso?: number; // Asegúrate de que este campo sea opcional
     }
   };
+
+  AbogadoEditarTareaScreen: { 
+    tarea: Tarea 
+  }; 
+
+  CasesScreen: undefined;
+  UpdateProcessScreen: { 
+    caseId: string 
+  };
+
+  CaseDetailScreen: { 
+    caseId: string;
+    shouldRefresh?: boolean;
+   };
+
+   FacturasScreen: undefined;
+   
+   
 };
 
 const Stack = createNativeStackNavigator <RootStackParamList>();
@@ -91,18 +109,6 @@ const App = () => {
         <Stack.Screen 
         name="InicioSesionScreen" 
         component={InicioSesionScreen} 
-        />
-
-        {/* Pagina principal */}
-        <Stack.Screen 
-        name="crudscreen" 
-        component={crudscreen} 
-        />
-
-        {/* Pagina principal */}
-        <Stack.Screen 
-        name="crudedit" 
-        component={crudedit} 
         />
         
 
@@ -139,8 +145,8 @@ const App = () => {
 
         {/* Pagina de facturacion del abogado*/}
         <Stack.Screen
-          name="AbogadoFacturaScreen"
-          component={AbogadoFacturaScreen}
+          name="FacturasScreen"
+          component={FacturasScreen}
         />
 
         {/* Pagina para crear una nueva agenda del abogado*/}
@@ -177,6 +183,31 @@ const App = () => {
         <Stack.Screen
           name="AbogadoEditarAgendaScreen"
           component={AbogadoEditarAgendaScreen}
+        />
+
+        {/* Screen para los detaller de las tareas del abogado*/}
+        <Stack.Screen
+          name="AbogadoDetalleTareaScreen"
+          component={AbogadoDetalleTareaScreen}
+        />
+
+        <Stack.Screen
+          name="CasesScreen"
+          component={CasesScreen}
+        />
+
+        <Stack.Screen
+          name="CaseDetailScreen"
+          component={CaseDetailScreen}
+        />
+
+        <Stack.Screen
+          name="AbogadoEditarTareaScreen"
+          component={AbogadoEditarTareaScreen}
+        />
+        <Stack.Screen
+          name="UpdateProcessScreen"
+          component={UpdateProcessScreen}
         />
 
       </Stack.Navigator>
