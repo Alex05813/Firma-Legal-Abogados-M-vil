@@ -36,7 +36,9 @@ export type RootStackParamList = {
   InicioSesionScreen: undefined;
 
   // Variables Clientes.
-  ClientePrincipalScreen: undefined;
+  ClientePrincipalScreen:{
+    numIdentificacion: string; // Parametro para la busqueda de citas
+  }
   ClienteAgendaScreen: undefined;
 
   // Variables Abogado.
