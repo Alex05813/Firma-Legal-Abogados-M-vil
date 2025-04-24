@@ -8,11 +8,7 @@ import { Picker } from '@react-native-picker/picker'; // Asegúrate de instalar 
 import { AbogadoEditarAgendaScreenStyle as styles } from './abogado_editar_agenda_screen_styles';
 import { Proceso } from '../../../../../domain/models/procesos/interface-procesos';
 import AbogadoEditarAgendaViewModel from './viewAbogadoEditarAgendaScreenModel';
-import DateTimePicker, {
-  DateTimePickerEvent,
-  AndroidNativeProps,
-  IOSNativeProps
-} from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { getBaseUrl } from '../../../../../domain/services/getBaseUrl';
 import axios from 'axios';
 
