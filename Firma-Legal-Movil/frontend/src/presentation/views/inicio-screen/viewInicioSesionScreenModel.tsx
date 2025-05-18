@@ -32,17 +32,19 @@ const navigation = useNavigation<NavigationProps>();
   }
 
   const autenticacion = async () => {
-    if (!email.trim() || !password.trim()) {
+    if (!email || !password) {
       Alert.alert('Error', 'Todos los campos son obligatorios');
       return;
     }
 
     setLoading(true);
     try {
+      const emailtrimed = email.trim();
+      const passwordtrimed = password.trim();
       const baseUrl = getBaseUrl();
       const response = await axios.post(`${baseUrl}/autenticacion`, {
-        email,
-        password
+        email: emailtrimed,
+        password: passwordtrimed
       }, {
         headers: { 
           'Content-Type': 'application/json',
@@ -72,9 +74,6 @@ const navigation = useNavigation<NavigationProps>();
             numIdentificacion: numero_identificacion,
           });
         }
-        // Si el rol es otro, puedes manejarlo aquí o redirigir a una pantalla por defecto
-
-        // navigation.navigate('ClientePrincipalScreen')
         limpiar_formulario();
         
     } else {

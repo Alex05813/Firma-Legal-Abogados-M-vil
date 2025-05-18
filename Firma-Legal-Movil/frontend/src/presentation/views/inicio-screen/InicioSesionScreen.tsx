@@ -11,11 +11,7 @@ const InicioSesionScreen = () => {
     password,
     setPassword,
     loading,
-    setLoading,
-    handleGoogleLogin,
-    handleAppleLogin,
     autenticacion,
-    limpiar_formulario
   } = viewInicioSesionScreenModel(); // Importar el modelo de vista
 
   return (
