@@ -10,6 +10,7 @@ import {jwtDecode} from 'jwt-decode';
 import { AxiosError } from '../../../domain/models/axios-error/interface-axioserror';
 import { CustomJwtPayload } from '../../../domain/models/jwtpayoad/interface-jwt';
 
+
 const viewInicioSesionScreenModel = () => {
     const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -92,7 +93,6 @@ const navigation = useNavigation<NavigationProps>();
     }
   };
 
-
   return {
     email,
     setEmail,
@@ -107,4 +107,4 @@ const navigation = useNavigation<NavigationProps>();
   }
 }
 
-export default viewInicioSesionScreenModel
+export default viewInicioSesionScreenModel;

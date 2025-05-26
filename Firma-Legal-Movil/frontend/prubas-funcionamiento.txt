@@ -1,0 +1,53 @@
+Errores en las pruebas unitarias:
+	1. El error documentado decía algo como:"SyntaxError: node_modules/react-native/index.js: 
+Missing semicolon"; este error lo que significa es que Jest estaba intentando analizar directamente el codigo de 
+React-Native, este codigo esta escrito para entornos moviles, no para configuraciones o pruebas unitarias en Jest.
+	- SOLUCION: En el archivo jest.config.js se configuro la opcion "transformIgnorePatterns" para decirle 
+a Jest que sí transforme ciertos módulos de node_modules (como React Native) usando Babel.
+	
+	2. El otro error era:"Cannot find module 'react-native/Libraries/Animated/NativeAnimatedHelper'", En 
+React Native 0.79.2, la estructura interna de archivos cambió, pero Jest seguía buscando el módulo en una 
+ruta obsoleta.
+	- SOLUCION: Se creo un mock manual en "__mocks__/react-native.js", para simular los módulos nativos. Luego
+Reemplazamos el mock de NativeAnimatedHelper por uno compatible con tu versión, haciendo tambien multiples 
+instalaciones de dependencias.
+
+	Explicaciones de archivos:
+	- jest.config.js: Este archivo define el seguimiento de como Jest debe ejecutar las rutas, osea como (
+transformar módulos, ignorar rutas, etc.), es evidentemente determinante para el funcionamiento de las pruebas
+sobre todo el la transformacion de los modulos.
+	- jest.setup.js: Se encarga de la configuracion de los mocks globales (osea las simulaciones de 
+herramientas globales como AsyncStorage, como muchas otras).
+	- __mocks__/react-native.js: Simula módulos nativos de React Native que Jest no puede ejecutar 
+(ej. Animated).
+	- __mocks__/expo-constants.js: Evita que Jest intente cargar el módulo real de Expo (que depende de 
+APIs nativas).
+	- babel.config.js: Permite a Babel transformar código moderno/JSX a JavaScript que Jest entienda.
+
+
+- Anotaciones
+	- React Native Testing: Requiere mocks de todo lo nativo (animaciones, almacenamiento, etc. Recordar que los mocks son 
+	las simulaciones de herramientas globales de lo que se quiere probar.
+	- Expo + Jest: Necesitan transformar módulos específicos y evitar dependencias nativas.
+	- Errores en cascada: A veces un error esconde otro. Hay que resolverlos en orden.
+
+- Probatoria en el futuro
+	- npm install jest-expo --save-dev
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
