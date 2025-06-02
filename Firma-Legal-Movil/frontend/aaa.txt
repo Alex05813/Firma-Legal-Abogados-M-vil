@@ -1,0 +1,4 @@
+contingecias, cosas que el usuario no deberia poder hacer, o directamente no debe hacer.
+Modelo relacional.
+Diccionario de datos
+Conclusion

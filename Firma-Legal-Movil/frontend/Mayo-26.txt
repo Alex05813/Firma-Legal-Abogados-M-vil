@@ -1,0 +1,12 @@
+glosario de comandos en linux
+
+manual tecnico de sistema operativo
+	servidor
+	base de datos
+		Todo manual debe tener la imagen bien clara, debe ser una guia orientada a un usuario, informacion 
+verificada
+	Primero terminar las pruebas unitarias antes de comenzar a hacer los manuales.
+
+Manual de pruebas, es donde se evidencian las pruebas unitarias
+
+Escribir el comando de instalacion y los componentes que necesita el proyecto.

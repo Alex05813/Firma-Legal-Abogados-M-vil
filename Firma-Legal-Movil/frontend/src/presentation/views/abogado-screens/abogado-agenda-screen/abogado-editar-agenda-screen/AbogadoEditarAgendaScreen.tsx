@@ -9,8 +9,6 @@ import { AbogadoEditarAgendaScreenStyle as styles } from './abogado_editar_agend
 import { Proceso } from '../../../../../domain/models/procesos/interface-procesos';
 import AbogadoEditarAgendaViewModel from './viewAbogadoEditarAgendaScreenModel';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { getBaseUrl } from '../../../../../domain/services/getBaseUrl';
-import axios from 'axios';
 
 type AbogadoEditAgendaRouteProp = RouteProp<RootStackParamList, 'AbogadoEditarAgendaScreen'>;
 
@@ -23,19 +21,14 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
     selectedProceso,
         setSelectedProceso,
         selectedStatus,
-        setSelectedStatus,
         procesos,
-        setProcesos,
-        lista_procesos,
         handleStatusChange,
         editar_proceso,
-        setEditarProceso,
         handleDateChange,
         formatDisplayDate,
         showDatePicker,
         setShowDatePicker,
         fecha,
-        setFecha,
         hora,
         setHora,
         descripcion,
