@@ -15,7 +15,7 @@ import DateTimePicker, {
 
 type AbogadoEditAgendaRouteProp = RouteProp<RootStackParamList, 'AbogadoEditarAgendaScreen'>;
 
-const AbogadoEditarAgendaViewModel = ({ route }: { route: AbogadoEditAgendaRouteProp }) => {
+export const AbogadoEditarAgendaViewModel = ({ route }: { route: AbogadoEditAgendaRouteProp }) => {
     const { agendaData } = route.params;
       const navigation = useNavigation<NavigationProps>();
       type NavigationProps = StackNavigationProp<RootStackParamList, 'AbogadoEditarAgendaScreen'>;
@@ -172,4 +172,3 @@ const AbogadoEditarAgendaViewModel = ({ route }: { route: AbogadoEditAgendaRoute
       }
 }
 
-export default AbogadoEditarAgendaViewModel;

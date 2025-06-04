@@ -7,7 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Picker } from '@react-native-picker/picker'; // Asegúrate de instalar primero
 import { AbogadoEditarAgendaScreenStyle as styles } from './abogado_editar_agenda_screen_styles';
 import { Proceso } from '../../../../../domain/models/procesos/interface-procesos';
-import AbogadoEditarAgendaViewModel from './viewAbogadoEditarAgendaScreenModel';
+import {AbogadoEditarAgendaViewModel} from './viewAbogadoEditarAgendaScreenModel';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 type AbogadoEditAgendaRouteProp = RouteProp<RootStackParamList, 'AbogadoEditarAgendaScreen'>;

@@ -1,83 +1,113 @@
-import { Alert } from 'react-native';
-import AbogadoEditarAgendaViewModel from '../../../../../../../src/presentation/views/abogado-screens/abogado-agenda-screen/abogado-editar-agenda-screen/viewAbogadoEditarAgendaScreenModel' 
+import React from 'react';
+import { renderHook } from '@testing-library/react-hooks';
+import { AbogadoEditarAgendaViewModel } from '../../../../../../../src/presentation/views/abogado-screens/abogado-agenda-screen/abogado-editar-agenda-screen/viewAbogadoEditarAgendaScreenModel';
+// import { getBaseUrl } from '../../../../../../../src/domain/services/getBaseUrl';
 
-jest.mock('react-native', () => {
-  const actual = jest.requireActual('react-native');
-  return {
-    ...actual,
-    Alert: {
-      alert: jest.fn(),
+// Mock mínimo de react-native para evitar conflictos
+jest.mock('react-native', () => ({
+  Alert: {
+    alert: jest.fn(),
+  },
+  Platform: {
+    OS: 'ios',
+  },
+  NativeModules: {
+    DevMenu: {
+      show: jest.fn(),
     },
-    Platform: { OS: 'android' },
-  };
-  
-});
-
-jest.mock('../../../../../../../src/domain/services/getBaseUrl', () => ({
-  getBaseUrl: () => 'http://mocked-url.com',
+  },
 }));
 
+// Mock de react-navigation
 jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({
     goBack: jest.fn(),
   }),
+  useRoute: () => ({
+    params: {
+      agendaData: {
+        id_agenda: 1,
+        id_proceso: 1,
+        estado: 'Programada',
+        fecha: '2023-01-01',
+        hora: '10:00',
+        descripcion: 'Descripción de prueba',
+      }
+    }
+  }),
+}));
+
+// Mock de axios
+jest.mock('axios', () => ({
+  put: jest.fn(() => Promise.resolve({ data: {} })),
+  delete: jest.fn(() => Promise.resolve({ data: {} })),
+  get: jest.fn(() => Promise.resolve({ data: [] })),
+}));
+
+// Mock de otros módulos problemáticos
+jest.mock('@react-native-community/datetimepicker', () => ({}));
+jest.mock('../../../../../../../src/domain/services/getBaseUrl', () => ({
+  getBaseUrl: jest.fn(() => 'http://localhost:3000'),
 }));
 
 describe('AbogadoEditarAgendaViewModel', () => {
-  const agendaData = {
-    id_agenda: 1,
-    id_proceso: 2,
-    estado: 'Programada',
-    fecha: new Date().toISOString(),
-    hora: '10:00',
-    descripcion: 'Test desc',
+  const mockRoute = {
+    key: 'AbogadoEditarAgendaScreen-123',
+    name: 'AbogadoEditarAgendaScreen' as const,
+    params: {
+      agendaData: {
+        id_agenda: 1,
+        id_proceso: 1,
+        estado: 'Programada',
+        fecha: '2023-01-01',
+        hora: '10:00',
+        descripcion: 'Descripción de prueba',
+      }
+    }
   };
-
-  // Modifica el objeto route para incluir las propiedades requeridas
-  const route = { 
-    params: { agendaData },
-    key: 'test-key',
-    name: 'AbogadoEditarAgendaScreen' as const
-  };
-
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('confirmarEliminacion muestra el Alert con los botones correctos', () => {
-  const viewModel = AbogadoEditarAgendaViewModel({ route });
-  
-  viewModel.confirmarEliminacion();
+  it('should call Alert.alert with correct params when confirmarEliminacion is called', () => {
+    const { result } = renderHook(() => 
+      AbogadoEditarAgendaViewModel({ route: mockRoute })
+    );
 
-  expect(Alert.alert).toHaveBeenCalledWith(
-    "Eliminar cita",
-    "¿Estás seguro de que deseas eliminar esta cita?",
-    expect.arrayContaining([
-      expect.objectContaining({ text: "No", style: "cancel" }),
-      expect.objectContaining({ 
-        text: "Sí", 
-        onPress: expect.any(Function) // No necesitas mockear eliminar_cita directamente
-      }),
-    ]),
-    { cancelable: true }
-  );
-});
+    result.current.confirmarEliminacion();
 
+    const { alert } = require('react-native').Alert;
+    expect(alert).toHaveBeenCalledWith(
+      "Eliminar cita",
+      "¿Estás seguro de que deseas eliminar esta cita?",
+      [
+        {
+          text: "No",
+          style: "cancel",
+        },
+        {
+          text: "Sí",
+          onPress: expect.any(Function),
+        },
+      ],
+      { cancelable: true }
+    );
+  });
 
-  it('el botón "Sí" del Alert llama a eliminar_cita', () => {
-  const viewModel = AbogadoEditarAgendaViewModel({ route });
-  
-  viewModel.confirmarEliminacion();
-  
-  const alertCall = (Alert.alert as jest.Mock).mock.calls[0];
-  const buttons = alertCall[2];
-  const botonSi = buttons.find((b: any) => b.text === "Sí");
-  
-  // Simplemente verifica que el botón tiene una función
-  expect(typeof botonSi.onPress).toBe('function');
+  it('should call eliminar_cita when user confirms deletion', async () => {
+    const { result } = renderHook(() => 
+      AbogadoEditarAgendaViewModel({ route: mockRoute })
+    );
 
-  // Verificar que el Alert se llamó exactamente 1 vez
-// expect(Alert.alert).toHaveBeenCalledTimes(1);
-});
+    result.current.confirmarEliminacion();
+
+    const { alert } = require('react-native').Alert;
+    const alertCalls = (alert as jest.Mock).mock.calls;
+    const onPressYes = alertCalls[0][2][1].onPress;
+    await onPressYes();
+
+    const axios = require('axios');
+    expect(axios.delete).toHaveBeenCalled();
+  });
 });
