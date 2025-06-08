@@ -1,4 +1,3 @@
 module.exports = {
-  presets: ["module:metro-react-native-babel-preset", "babel-preset-expo"],
-  plugins: [["@babel/plugin-transform-flow-strip-types", { all: true }]],
+  presets: ["babel-preset-expo"],
 };

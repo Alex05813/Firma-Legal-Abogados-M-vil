@@ -55,14 +55,14 @@ const AbogadoAgendaViewModel = () => {
           fetchAgendas(); 
       }, []);
 
-      const incrementarMes = () => {
-        setMesActual((prevMes) => (prevMes + 1) % 12); // Avanza al siguiente mes
-    };
+    //   const incrementarMes = () => {
+    //     setMesActual((prevMes) => (prevMes + 1) % 12); // Avanza al siguiente mes
+    // };
     
     
-    const decrementarMes = () => {
-        setMesActual((prevMes) => (prevMes - 1 + 12) % 12); // Retrocede al mes anterior
-    };
+    // const decrementarMes = () => {
+    //     setMesActual((prevMes) => (prevMes - 1 + 12) % 12); // Retrocede al mes anterior
+    // };
     
     
     // Obtener el nombre del mes
@@ -76,8 +76,8 @@ const AbogadoAgendaViewModel = () => {
         const dia = fechaActual.getDate() + ' de ' + meses[fechaActual.getMonth()] + ' ' + fechaActual.getFullYear(); // Formato: 26 de Septiembre de 2023
         const mes = meses[fechaActual.getMonth()] ; // Los meses son 0-indexados
   return {
-    incrementarMes,
-    decrementarMes,
+    // incrementarMes,
+    // decrementarMes,
     nombreMesActual,
     diasSemana,
     numerosDias,

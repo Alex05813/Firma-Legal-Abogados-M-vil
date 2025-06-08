@@ -26,11 +26,9 @@ export const crearProceso = async (req, res) => {
       numeroIdentificacion: numeroIdentificacionCliente,
     });
     if (!clienteExistente) {
-      return res
-        .status(404)
-        .json({
-          mensaje: "Cliente no encontrado con ese número de identificación",
-        });
+      return res.status(404).json({
+        mensaje: "Cliente no encontrado con ese número de identificación",
+      });
     }
 
     // Verificar si el abogado con ese número de identificación existe
@@ -38,11 +36,9 @@ export const crearProceso = async (req, res) => {
       numeroIdentificacion: numeroIdentificacionAbogado,
     });
     if (!abogadoExistente) {
-      return res
-        .status(404)
-        .json({
-          mensaje: "Abogado no encontrado con ese número de identificación",
-        });
+      return res.status(404).json({
+        mensaje: "Abogado no encontrado con ese número de identificación",
+      });
     }
 
     // Verificar si el tipo de proceso existe
@@ -210,11 +206,9 @@ export const actualizarProceso = async (req, res) => {
       numeroIdentificacion: numeroIdentificacionCliente,
     });
     if (!clienteExistente) {
-      return res
-        .status(404)
-        .json({
-          mensaje: "Cliente no encontrado con ese número de identificación",
-        });
+      return res.status(404).json({
+        mensaje: "Cliente no encontrado con ese número de identificación",
+      });
     }
 
     // Verificar si el abogado con ese número de identificación existe
@@ -222,11 +216,9 @@ export const actualizarProceso = async (req, res) => {
       numeroIdentificacion: numeroIdentificacionAbogado,
     });
     if (!abogadoExistente) {
-      return res
-        .status(404)
-        .json({
-          mensaje: "Abogado no encontrado con ese número de identificación",
-        });
+      return res.status(404).json({
+        mensaje: "Abogado no encontrado con ese número de identificación",
+      });
     }
 
     // Verificar si el tipo de proceso existe
@@ -272,20 +264,16 @@ export const actualizarProceso = async (req, res) => {
     // Guardar los cambios
     await procesoExistente.save();
 
-    res
-      .status(200)
-      .json({
-        mensaje: "Proceso actualizado con éxito",
-        proceso: procesoExistente,
-      });
+    res.status(200).json({
+      mensaje: "Proceso actualizado con éxito",
+      proceso: procesoExistente,
+    });
   } catch (error) {
     console.error("Error al actualizar el proceso:", error);
-    res
-      .status(500)
-      .json({
-        mensaje: "Error al actualizar el proceso",
-        error: error.message,
-      });
+    res.status(500).json({
+      mensaje: "Error al actualizar el proceso",
+      error: error.message,
+    });
   }
 };
 
@@ -359,8 +347,8 @@ export const get_process_id = async (req, res) => {
   }
 };
 
-// 6. Controlador para obtener un proceso por su Id.
-// export const get_process_id = async (req, res) => {
+// // 6. Controlador para obtener un proceso por su Id.
+// export const get_process_idASS = async (req, res) => {
 //   try {
 //       const { id_proceso } = req.params;
 //       const process = await Proceso
@@ -387,3 +375,58 @@ export const get_process_id = async (req, res) => {
 
 //   }
 // }
+
+// 7. Buscar todos los procesos  por el numero de identificacion del abogado.
+export const get_process_by_abogado = async (req, res) => {
+  try {
+    const { numeroIdentificacionAbogado } = req.params;
+
+    //  Buscar todos los procesos con ese número de identificación
+    const procesos = await Proceso.find({ numeroIdentificacionAbogado })
+      .populate("numeroIdentificacionCliente", "nombre apellido")
+      .populate("numeroIdentificacionAbogado", "nombre apellido");
+
+    if (!procesos || procesos.length === 0) {
+      return res.status(404).json({
+        Request_failed: `No se encontraron procesos para el abogado con número de identificación ${numeroIdentificacionAbogado}`,
+        totalProcesos: 0,
+      });
+    }
+
+    const [tipos, subprocesos, documentos] = await Promise.all([
+      TipoProcess.find(),
+      SubProcess.find(),
+      DocEsp.find(),
+    ]);
+
+    const procesosConNombres = procesos.map((proceso) => {
+      const tipo = tipos.find((t) => t.id_tipo === proceso.id_tipo);
+      const subproceso = subprocesos.find(
+        (s) => s.id_subproceso === proceso.id_subproceso
+      );
+      const documento = documentos.find(
+        (d) => d.id_docesp === proceso.id_docesp
+      );
+      return {
+        ...proceso.toObject(),
+        tipo: tipo ? tipo.nombre : null,
+        subproceso: subproceso ? subproceso.nombre : null,
+        documento: documento ? documento.nombre : null,
+      };
+    });
+
+    // Respuesta exitosa
+    res.status(200).json(
+      // Request_success: "Procesos encontrados exitosamente",
+      // numeroIdentificacionAbogado: numeroIdentificacionAbogado,
+      // totalProcesos: procesos.length,
+      procesosConNombres
+    );
+  } catch (error) {
+    console.error("Error al buscar procesos por abogado:", error);
+    res.status(500).json({
+      Request_failed: "Error al buscar los procesos del abogado",
+      Error: error.message,
+    });
+  }
+};

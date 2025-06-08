@@ -6,21 +6,55 @@ import { useNavigation } from '@react-navigation/native';
 import { AbogadoAgendaScreenStyle as styles } from './abogado_agenda_screen_styles';
 import AbogadoAgendaViewModel from './viewAbogadoAgendaScreenModel';
 import { Agenda } from '../../../../../domain/models/agenda/interface-agenda';
+import { RouteProp, useRoute } from '@react-navigation/native';
 
-const AbogadoAgendaScreen = () => {
 
   type NavigationProps = StackNavigationProp<RootStackParamList, 'AbogadoAgendaScreen'>;
-      const navigation = useNavigation<NavigationProps>();
+type AbogadoAgendaRouteProp = RouteProp<RootStackParamList, 'AbogadoNuevaAgendaScreen'>;
 
+
+const AbogadoAgendaScreen = () => {
+      const route = useRoute<AbogadoAgendaRouteProp>();
+          const { numIdentificacion2 } = route.params; // Extrae el parámetro
+
+  
+
+      const navigation = useNavigation<NavigationProps>();
+  
       const { 
-        incrementarMes,
-        decrementarMes,
+        // incrementarMes,
+        // decrementarMes,
         nombreMesActual,
         diasSemana,
         numerosDias,
         agendas,
         dia,} 
         = AbogadoAgendaViewModel()
+
+        // NUEVA FUNCIÓN: Obtener el día actual de la semana
+    const obtenerDiaActual = () => {
+    const hoy = new Date();
+    const diasSemanaCompletos = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const diaActual = diasSemanaCompletos[hoy.getDay()];
+    
+    // Mapear a las abreviaciones que usas en tu app
+    const mapeoAbreviaciones: { [key: string]: string } = {
+      'Domingo': 'Do',
+      'Lunes': 'Lu', 
+      'Martes': 'Ma',
+      'Miércoles': 'Mi',
+      'Jueves': 'Ju',
+      'Viernes': 'Vi',
+      'Sábado': 'Sa'
+    };
+    
+    return mapeoAbreviaciones[diaActual] || '';
+    };
+
+  // NUEVA FUNCIÓN: Verificar si un día es el día actual
+  const esDiaActual = (dia: string) => {
+    return dia === obtenerDiaActual();
+  };
 
         // Depuracion
         console.log('Agendas a renderizar:', agendas);
@@ -55,33 +89,35 @@ const AbogadoAgendaScreen = () => {
 
             {/* Resto del código (barra de días y lista de citas) */}
             <View style={styles.mesContainer}>
-                <TouchableOpacity onPress={decrementarMes}>
-                    <Text>{'<'}</Text>
-                </TouchableOpacity>
+                    <Text>{' '}</Text>
 
                 {/* Validación para asegurar que nombreMesActual sea una cadena válida */}
-                <Text>{typeof nombreMesActual === 'string' && nombreMesActual.trim() !== '' ? nombreMesActual : 'Mes desconocido'}</Text>
+                <Text style={styles.nombreMes}>{typeof nombreMesActual === 'string' && nombreMesActual.trim() !== '' ? nombreMesActual : 'Mes desconocido'}</Text>
                 
-                <TouchableOpacity onPress={incrementarMes}>
-                    <Text>{'>'}</Text>
-                </TouchableOpacity>
+                    <Text>{' '}</Text>
             </View>
 
-            <View style={styles.diasContainer}>
-                {diasSemana.map((dia, index) => (
-                    <TouchableOpacity key={index} style={styles.diaItem}>
-                      {/* Validación para asegurar que 'dia' sea un texto válido */}
-                      <Text style={styles.diaText}>{typeof dia === 'string' && dia.trim() !== '' ? dia : 'Día'}</Text>
-                      
-                      {/* Validación para asegurar que 'numerosDias[index]' sea un número o texto válido */}
-                      {/* <Text style={styles.numeroDiaText}>
-                          {typeof numerosDias[index] === 'number' || typeof numerosDias[index] === 'string' 
-                              ? numerosDias[index] 
-                              : ''}
-                      </Text> */}
-                    </TouchableOpacity>
-                ))}
-            </View>
+            {/* MODIFICACIÓN PRINCIPAL: diasContainer con lógica para resaltar día actual */}
+      <View style={styles.diasContainer}>
+        {diasSemana.map((dia, index) => (
+          <TouchableOpacity 
+            key={index} 
+            style={[
+              styles.diaItem,
+              esDiaActual(dia) && styles.diaActual // Aplicar estilo especial si es el día actual
+            ]}
+          >
+            <Text 
+              style={[
+                styles.diaText,
+                esDiaActual(dia) && styles.diaActualText // Cambiar color del texto si es día actual
+              ]}
+            >
+              {typeof dia === 'string' && dia.trim() !== '' ? dia : 'Día'}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
 
             <ScrollView style={styles.scrollContainer}>
              {Array.isArray(agendas) && agendas.map((agenda: Agenda) => (
@@ -127,6 +163,7 @@ const AbogadoAgendaScreen = () => {
                           descripcion: agenda.descripcion,
                           procesoDescripcion: agenda.procesoDescripcion , // Asegúrate de que este campo sea opcional
                           id_proceso: agenda.id_proceso, // Asegúrate de que este campo sea opcional
+                          numeroIdentificacionAbogado: agenda.numeroIdentificacionAbogado, // Asegúrate de que este campo sea opcional
                         }
                       })}>
                       <Text style={styles.hora}>Editar cita</Text>
@@ -139,7 +176,9 @@ const AbogadoAgendaScreen = () => {
             {/* Botón flotante */}
             <TouchableOpacity
             onPress={() => {
-                navigation.navigate('AbogadoNuevaAgendaScreen')
+                navigation.navigate('AbogadoNuevaAgendaScreen',{
+                  numIdentificacion2: numIdentificacion2 // Pasar el parámetro numIdentificacion2
+                })
             }}
             style={styles.addButton}>
                 <Text style={styles.addButtonText}>+</Text>

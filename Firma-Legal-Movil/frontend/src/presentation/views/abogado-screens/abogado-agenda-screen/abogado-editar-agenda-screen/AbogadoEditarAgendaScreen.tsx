@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Platform, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../../../../../App'
 import { useNavigation } from '@react-navigation/native';
@@ -37,7 +37,12 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
   } = AbogadoEditarAgendaViewModel({ route });
   
   return (
-    // lista_procesos(),
+     <KeyboardAvoidingView 
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 2}
+    >
+
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
@@ -68,9 +73,9 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
           editable={false}
         />
 
-        {/* Fecha */}
         {/* Campo de fecha mejorado */}
         <View>
+
       <Text style={styles.label}>Fecha de la cita</Text>
       
       <TouchableOpacity 
@@ -206,6 +211,7 @@ const AbogadoEditarAgendaScreen = ({ route }: { route: AbogadoEditAgendaRoutePro
         </View>
       </ScrollView>
     </View>
+    </KeyboardAvoidingView>
   );
 };
 

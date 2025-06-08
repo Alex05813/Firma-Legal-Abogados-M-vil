@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { Alert } from 'react-native';
 import { RootStackParamList } from '../../../../../../App';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios'
 import { getBaseUrl } from '../../../../../domain/services/getBaseUrl';
 import { AbogadoNuevaAgendaScreen as styles } from './abogado_nueva_agenda_screen_styles';
+import { Proceso } from '../../../../../domain/models/procesos/interface-procesos';
+import { RouteProp } from '@react-navigation/native';
 
-const ViewAbogadoNuevaAgendaScreen = () => {
+type AbogadoEditAgendaRouteProp = RouteProp<RootStackParamList, 'AbogadoNuevaAgendaScreen'>;
+const ViewAbogadoNuevaAgendaScreen = ({ route }: { route: AbogadoEditAgendaRouteProp }) => {
 
     type NavigationProps = StackNavigationProp<RootStackParamList, 'AbogadoNuevaAgendaScreen'>;
+    const { numIdentificacion2 } = route.params;
+          console.log('Número de identificación del abogado, desde el VIEWMODEL:', numIdentificacion2); // Verifica el valor del parámetro
+
             const navigation = useNavigation<NavigationProps>();
     
       const [form, setForm] = useState({
-        id_agenda: '',
         fecha: '',
         hora: '',
         descripcion: '',
@@ -22,6 +26,9 @@ const ViewAbogadoNuevaAgendaScreen = () => {
         proceso: '',
         id_proceso:'',
       });
+
+      const [procesos, setProcesos] = useState<Proceso[]>([]);
+      
     
       const handleChange = (name: string, value: string) => {
         setForm({ ...form, [name]: value });
@@ -35,7 +42,7 @@ const ViewAbogadoNuevaAgendaScreen = () => {
       const insertar_cita = async () => {
         try {
           // Validar que todos los campos estén completos
-          if (!form.id_agenda || !form.fecha || !form.hora || !form.descripcion || !form.id_proceso) {
+          if (!form.fecha || !form.hora || !form.descripcion || !form.id_proceso) {
             Alert.alert('Error', 'Por favor completa todos los campos.');
             return;
           }
@@ -51,7 +58,6 @@ const ViewAbogadoNuevaAgendaScreen = () => {
     
           // Crear el objeto para enviar al backend
           const nuevaCita = {
-            id_agenda: parseInt(form.id_agenda), // Convertimos a número
             fecha: fechaISO,
             hora: form.hora,
             descripcion: form.descripcion,
@@ -72,6 +78,19 @@ const ViewAbogadoNuevaAgendaScreen = () => {
         }
       };
 
+      const lista_procesos = async () => {
+        try {
+          const baseurl = getBaseUrl();
+          const process = await axios.get(`${baseurl}/procesos/abogado/${numIdentificacion2}`);
+          setProcesos(process.data)
+          console.log('_____________NUMERO DE PROCESOS ENCONTRADOS DESDE EL APARTADO DE LA NUEVA AGENDA_________:', process.data.length);
+          console.log('Procesos obtenidos:', process.data);
+          
+        } catch (error) {
+          console.error('Error al obtener los procesos:', error);
+        }
+      };
+
       return {
         form,
         handleChange,
@@ -79,6 +98,8 @@ const ViewAbogadoNuevaAgendaScreen = () => {
         insertar_cita,
         styles,
         navigation,
+        lista_procesos,
+        procesos, setProcesos
       }
 }
 export default ViewAbogadoNuevaAgendaScreen;

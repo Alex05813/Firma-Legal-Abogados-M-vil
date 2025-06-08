@@ -4,8 +4,7 @@ import Proceso from "../models/ProcessModel.js";
 // Controlador para crear una agenda
 export const crearAgenda = async (req, res) => {
   try {
-    const { id_agenda, fecha, hora, descripcion, estado, id_proceso } =
-      req.body;
+    const { fecha, hora, descripcion, estado, id_proceso } = req.body;
 
     // Verificamos si existe el proceso
     const proceso = await Proceso.findOne({ id_proceso });
@@ -15,17 +14,15 @@ export const crearAgenda = async (req, res) => {
       return res.status(404).json({ message: "Proceso no encontrado" });
     }
 
-    // Verificamos si ya existe una agenda con ese id_agenda
-    const agendaExistente = await Agenda.findOne({ id_agenda });
-    if (agendaExistente) {
-      return res
-        .status(400)
-        .json({ message: "Ya existe una agenda con ese ID" });
-    }
+    // Generar el próximo id_agenda automáticamente
+    const ultimaAgenda = await Agenda.findOne().sort({ id_agenda: -1 });
+    const nuevoIdAgenda = ultimaAgenda ? ultimaAgenda.id_agenda + 1 : 1;
+
+    console.log("Nuevo ID de agenda generado:", nuevoIdAgenda);
 
     // Crear la agenda
     const nuevaAgenda = new Agenda({
-      id_agenda,
+      id_agenda: nuevoIdAgenda,
       fecha,
       hora,
       descripcion,

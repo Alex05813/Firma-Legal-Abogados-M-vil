@@ -62,6 +62,9 @@ const navigation = useNavigation<NavigationProps>();
 
         const nombre_rol = decodedToken.nombre_rol;
         console.log('Nombre de rol obtenido en el Inicio de sesion:', nombre_rol);
+
+        const nombre_usuario = decodedToken.nombre+" "+ decodedToken.apellido;
+        console.log('Nombre de usuario obtenido en el Inicio de sesion:', nombre_usuario);
         
 
         ToastAndroid.show('¡Inicio de sesión exitoso!', ToastAndroid.SHORT);
@@ -73,6 +76,7 @@ const navigation = useNavigation<NavigationProps>();
         } else if (nombre_rol === 'abogado') {
           navigation.navigate('AbogadoPrincipalScreen',{
             numIdentificacion: numero_identificacion,
+            nombre: nombre_usuario,
           });
         }
         limpiar_formulario();
@@ -103,7 +107,7 @@ const navigation = useNavigation<NavigationProps>();
     handleGoogleLogin,
     handleAppleLogin,
     autenticacion,
-    limpiar_formulario
+    limpiar_formulario,
   }
 }
 

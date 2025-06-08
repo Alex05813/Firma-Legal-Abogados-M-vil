@@ -11,7 +11,6 @@ Content-Type: application/json
 
 ### Obtener un abogado por ID
 GET http://localhost:9000/api/abogados/1029144521
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1lcm9JZGVudGlmaWNhY2lvbiI6Ijk5OTk5OTk5OTkiLCJub21icmUiOiJBbGV4YW5kZXIiLCJhcGVsbGlkbyI6IlBhcnJhIiwiZW1haWwiOiJhbGV4YW5kZXIucGVyZG9tb0BnbWFpbC5jb20iLCJ0ZWxlZm9ubyI6IjAwMDAwMDAwMDAiLCJub21icmVfcm9sIjoiYXNpc3RlbnRlIiwiaWF0IjoxNzQ1MjUzNjczLCJleHAiOjE3NDUyNTcyNzN9.AkaZSshQlznUNBoP7uZJl3Ce_dstLtN-GebxaCp9XRc
 
 ### Actualizar un abogado
 PUT http://localhost:9000/api/abogados/1029144521

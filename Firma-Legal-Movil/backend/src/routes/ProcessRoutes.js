@@ -6,6 +6,7 @@ import {
   eliminarProceso,
   actualizarProceso,
   // get_especify_process,
+  get_process_by_abogado,
 } from "../controllers/ProcessController.js";
 import {
   createProcesoSchema,
@@ -264,6 +265,12 @@ ProcessRouter.get(
   "/:id_proceso",
   validatorHandler(getProcesoByIdSchema, "params"),
   get_process_id
+);
+
+// Agregar esta ruta
+ProcessRouter.get(
+  "/abogado/:numeroIdentificacionAbogado",
+  get_process_by_abogado
 );
 
 export default ProcessRouter;

@@ -73,10 +73,24 @@ export const AbogadoAgendaScreenStyle = StyleSheet.create({
         fontWeight: '500',
         color: '#495057',
       },
+      diaActual: {
+  backgroundColor: '#007AFF', // Azul para resaltar el día actual
+  shadowColor: '#007AFF',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.3,
+  shadowRadius: 4,
+  elevation: 3,
+},
+
+diaActualText: {
+  color: '#FFFFFF', // Texto blanco para contraste
+  fontWeight: 'bold',
+},
       scrollContainer: {
         flex: 1,
         paddingHorizontal: 16,
-        marginTop: 10,
+        marginTop: 30,
+        marginBottom: 40,
       },
     citaCard: {
         backgroundColor: '#FFFFFF',
@@ -190,5 +204,11 @@ export const AbogadoAgendaScreenStyle = StyleSheet.create({
         fontSize: 13,
         lineHeight: 18,
       },
+      nombreMes: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#495057',
+        textAlign: 'center',
+      }
       
 });

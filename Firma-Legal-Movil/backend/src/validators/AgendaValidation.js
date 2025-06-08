@@ -2,11 +2,6 @@ import Joi from "joi";
 
 //Esquema de validacion para crear una factura
 export const createAgendaSchema = Joi.object({
-  id_agenda: Joi.number().required().messages({
-    "any.required": "El ID de la agenda es obligatorio.",
-    "number.base": "El ID de la agenda debe ser un número.",
-  }),
-
   fecha: Joi.date().required().messages({
     "any.required": "La fecha es obligatoria.",
     "date.base": "La fecha debe ser una fecha válida.",

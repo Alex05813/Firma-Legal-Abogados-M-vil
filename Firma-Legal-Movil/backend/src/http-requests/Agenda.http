@@ -3,12 +3,11 @@ POST http://localhost:9000/api/agendas
 Content-Type: application/json
 
 {
-  "id_agenda": 7,
   "fecha": "2025-08-12T10:00:00Z",
   "hora": "12:00",
   "descripcion": "cita ip asdasdasd",
   "estado": "programada",
-  "id_proceso": 1
+  "id_proceso": 9876543211
 }
 ###
 
@@ -34,7 +33,7 @@ Content-Type: application/json
 ###
 
 ### Eliminar una Agenda
-DELETE http://localhost:9000/api/agendas/8
+DELETE http://localhost:9000/api/agendas/3
 Content-Type: application/json
 ###
 

@@ -71,9 +71,11 @@ export const AbogadoEditarAgendaViewModel = ({ route }: { route: AbogadoEditAgen
       const lista_procesos = async () => {
         try {
           const baseurl = getBaseUrl();
-          const process = await axios.get(`${baseurl}/procesos`);
+          const process = await axios.get(`${baseurl}/procesos/abogado/${agendaData.numeroIdentificacionAbogado}`);
           setProcesos(process.data)
-          console.log('LISTA DE PROCESOS OBTENIDOS DE LA APIIIII:', process.data);
+          console.log('_____________NUMERO DE PROCESOS ENCONTRADOS_________:', process.data.length);
+          console.log('Procesos obtenidos:', process.data);
+          
         } catch (error) {
           console.error('Error al obtener los procesos:', error);
         }

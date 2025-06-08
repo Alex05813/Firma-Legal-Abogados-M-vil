@@ -27,6 +27,7 @@ import { Tarea } from './src/types';
 import AbogadoEditarTareaScreen from './src/presentation/views/abogado-screens/abogado-tarea-screen/AbogadoEditarTareaScreen';
 import UpdateProcessScreen from './src/presentation/views/abogado-screens/abogado-procesos-screen/UpdateProcessScreen';
 import FacturasScreen from './src/presentation/views/abogado-screens/abogado-factura-screen/FacturasScreen';
+import AbogadoConfiguracionScreen from './src/presentation/views/abogado-screens/abogado-configuracion-screen/AbogadoConfiguracionScreen';
 
 
 export type RootStackParamList = {
@@ -44,12 +45,15 @@ export type RootStackParamList = {
   // Variables Abogado.
   AbogadoPrincipalScreen: {
     numIdentificacion: string; 
+    nombre: string; // Parametro para la busqueda de citas
   };
     AbogadoAgendaScreen: {
       numIdentificacion2: string; // Parametro para la busqueda de citas
     }
 
-  AbogadoNuevaAgendaScreen: undefined;
+  AbogadoNuevaAgendaScreen: {
+    numIdentificacion2: string
+  }
   AbogadoTareaScreen:{ 
     refresh?: boolean;
      newTaskId?: number; 
@@ -61,6 +65,7 @@ export type RootStackParamList = {
   AbogadoDetalleTareaScreen: { 
     tarea: Tarea 
   };
+  AbogadoConfiguracionScreen: undefined;
 
     AbogadoEditarAgendaScreen: {
     agendaData: {
@@ -71,6 +76,7 @@ export type RootStackParamList = {
       descripcion: string;
       procesoDescripcion?: string;
       id_proceso?: number; // Asegúrate de que este campo sea opcional
+      numeroIdentificacionAbogado?: string; // Asegúrate de que este campo sea opcional
     }
   };
 
@@ -137,6 +143,11 @@ const App = () => {
         <Stack.Screen
           name="AbogadoPrincipalScreen"
           component={AbogadoPrincipalScreen}
+        />
+
+        <Stack.Screen
+          name="AbogadoConfiguracionScreen"
+          component={AbogadoConfiguracionScreen}
         />
 
         {/* Pagina de agenda del abogado*/}

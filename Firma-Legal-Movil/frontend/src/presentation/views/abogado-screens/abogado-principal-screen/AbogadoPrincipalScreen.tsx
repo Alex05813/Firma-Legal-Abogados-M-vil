@@ -19,56 +19,81 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../../App';
 import { useNavigation } from '@react-navigation/native';
 import { RouteProp, useRoute } from '@react-navigation/native';
+import { CheckboxItem } from '../../../../domain/models/checkboxitem/interface-checkboxitem';
+import { UserProfile } from '../../../../domain/models/userprofile/interface-userprofile';
+import { Task } from '../../../../domain/models/task/interface-task';
+import { FileData } from '../../../../domain/models/file-data/interface-fileData';
+import { AlertItem } from '../../../../domain/models/alert-item/interface-alertItem';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // ← AGREGAR ESTA IMPORTACIÓN
 
-interface CheckboxItem {
-  id: string;
-  label: string;
-  checked: boolean;
-}
-
-interface UserProfile {
-  name: string;
-  imageUri: any;
-}
-
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  dueDate: string;
-}
-
-interface AlertItem {
-  id: string;
-  title: string;
-  message: string;
-  priority: 'high' | 'medium' | 'low';
-}
-
-interface FileData {
-  name: string;
-  size: number;
-  uri: string;
-  mimeType: string;
-}
 
 type AbogadoPrincipalRouteProp = RouteProp<RootStackParamList, 'AbogadoPrincipalScreen'>;
 
 const HomeScreen: React.FC = () => {
   const route = useRoute<AbogadoPrincipalRouteProp>();
-  const { numIdentificacion } = route.params; // Extrae el parámetro
+  const { numIdentificacion, nombre } = route.params; // Extrae el parámetro
   
   type NavigationProps = StackNavigationProp<RootStackParamList, 'AbogadoPrincipalScreen'>;
           const navigation = useNavigation<NavigationProps>();
   const [profile, setProfile] = useState<UserProfile>({
-    name: 'Bill Gates',
-    imageUri: require('../../../../../assets/billgates.jpg'),
+    name: nombre,
+    imageUri: require('../../../../../assets/billgates.jpg')
   });
+  // ← NUEVA FUNCIÓN PARA CARGAR LA FOTO GUARDADA
+  const loadSavedProfileImage = async () => {
+    try {
+      const savedImageUri = await AsyncStorage.getItem(`profileImage_${numIdentificacion}`);
+      if (savedImageUri) {
+        // Verificar si el archivo aún existe
+        const fileInfo = await FileSystem.getInfoAsync(savedImageUri);
+        if (fileInfo.exists) {
+          setProfile(prev => ({ ...prev, imageUri: { uri: savedImageUri } }));
+        } else {
+          // Si el archivo no existe, eliminar la referencia guardada
+          await AsyncStorage.removeItem(`profileImage_${numIdentificacion}`);
+        }
+      }
+    } catch (error) {
+      console.log('Error loading saved profile image:', error);
+    }
+  };
+
+  // ← NUEVA FUNCIÓN PARA GUARDAR LA FOTO
+  const saveProfileImage = async (imageUri: string) => {
+    try {
+      // Crear un directorio permanente para las fotos de perfil
+      const profileImagesDir = `${FileSystem.documentDirectory}profile_images/`;
+      const dirInfo = await FileSystem.getInfoAsync(profileImagesDir);
+      
+      if (!dirInfo.exists) {
+        await FileSystem.makeDirectoryAsync(profileImagesDir, { intermediates: true });
+      }
+
+      // Crear un nombre único para la imagen
+      const fileName = `profile_${numIdentificacion}_${Date.now()}.jpg`;
+      const newImageUri = `${profileImagesDir}${fileName}`;
+
+      // Copiar la imagen al directorio permanente
+      await FileSystem.copyAsync({
+        from: imageUri,
+        to: newImageUri
+      });
+
+      // Guardar la URI en AsyncStorage
+      await AsyncStorage.setItem(`profileImage_${numIdentificacion}`, newImageUri);
+
+      return newImageUri;
+    } catch (error) {
+      console.log('Error saving profile image:', error);
+      return imageUri; // Retornar la URI original si hay error
+    }
+  };
+  
 
   const [stats, setStats] = useState<CheckboxItem[]>([
-    { id: '1', label: '0 Procesos totales', checked: false },
-    { id: '2', label: '0 Documentos guardados', checked: true },
-    { id: '3', label: '0 Usuarios en la firma', checked: false },
+    { id: '1', label: '#cProcesos totales', checked: false },
+    { id: '2', label: '# Documentos guardados', checked: true },
+    { id: '3', label: '# Usuarios en la firma', checked: false },
   ]);
 
   const [tasks] = useState<Task[]>([
@@ -94,6 +119,11 @@ const HomeScreen: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<FileData[]>([]);
   const slideAnim = useRef(new Animated.Value(-300)).current;
+
+    // ← CARGAR LA FOTO AL INICIAR LA PANTALLA
+  useEffect(() => {
+    loadSavedProfileImage();
+  }, [numIdentificacion]);
 
   useEffect(() => {
     (async () => {
@@ -131,6 +161,7 @@ const HomeScreen: React.FC = () => {
     );
   };
 
+  // ← MODIFICAR LA FUNCIÓN pickImage
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -140,7 +171,13 @@ const HomeScreen: React.FC = () => {
     });
 
     if (!result.canceled) {
-      setProfile({ ...profile, imageUri: { uri: result.assets[0].uri } });
+      const selectedImageUri = result.assets[0].uri;
+      
+      // Guardar la imagen de manera permanente
+      const savedImageUri = await saveProfileImage(selectedImageUri);
+      
+      // Actualizar el estado
+      setProfile({ ...profile, imageUri: { uri: savedImageUri } });
     }
   };
 
@@ -152,10 +189,15 @@ const HomeScreen: React.FC = () => {
     });
 
     if (!result.canceled) {
-      setProfile({ ...profile, imageUri: { uri: result.assets[0].uri } });
+      const selectedImageUri = result.assets[0].uri;
+      
+      // Guardar la imagen de manera permanente
+      const savedImageUri = await saveProfileImage(selectedImageUri);
+      
+      // Actualizar el estado
+      setProfile({ ...profile, imageUri: { uri: savedImageUri } });
     }
   };
-
   const showImagePickerOptions = () => {
     Alert.alert(
       'Cambiar foto de perfil',
@@ -278,7 +320,7 @@ const HomeScreen: React.FC = () => {
           </TouchableOpacity>
           <View>
             <Text style={styles.greeting}>Hola {profile.name}</Text>
-            <Text style={styles.subtitle}>Este es un resumen de tu actividad</Text>
+            <Text style={styles.subtitle}>Firma Legal Abogados</Text>
           </View>
         </View>
         
@@ -301,7 +343,7 @@ const HomeScreen: React.FC = () => {
               { transform: [{ translateX: slideAnim }] }
             ]}
           >
-            <TouchableOpacity style={styles.menuItem}>
+            <TouchableOpacity style={styles.menuItem} onPress={()=> navigation.navigate('AbogadoConfiguracionScreen')}>
               <Text style={styles.menuItemText}>⚙️ Configuración</Text>
             </TouchableOpacity>
             <TouchableOpacity 
@@ -383,7 +425,7 @@ const HomeScreen: React.FC = () => {
             })
             setShowTaskModal(true)
           }}>
-          <Text style={styles.capsuleTitle}>📌 Agendamiento</Text>
+          <Text style={styles.capsuleTitle}>Agenda 🗓️</Text>
           <Text style={styles.capsuleSubtitle}>{tasks.length} pendiente(s)</Text>
         </TouchableOpacity>
 
@@ -435,38 +477,11 @@ const HomeScreen: React.FC = () => {
       <View style={styles.divider} />
 
       {/* Falta información */}
-      <View style={styles.section}>
+      <View style={styles.sectiondos}>
         <Text style={styles.infoText}>
           Carga expedientes y sigue utilizando LAO para nutrir de información tu estudio y obtener métricas
         </Text>
       </View>
-
-      {/* Modal de Tareas
-      <Modal
-        visible={showTaskModal}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setShowTaskModal(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>📌 Tarea Pendiente</Text>
-            {tasks.map(task => (
-              <View key={task.id} style={styles.taskItem}>
-                <Text style={styles.taskTitle}>{task.title}</Text>
-                <Text style={styles.taskDescription}>{task.description}</Text>
-                <Text style={styles.taskDueDate}>Fecha límite: {task.dueDate}</Text>
-              </View>
-            ))}
-            <TouchableOpacity 
-              style={styles.closeButton}
-              onPress={() => setShowTaskModal(false)}
-            >
-              <Text style={styles.closeButtonText}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal> */}
 
       {/* Modal de Alertas */}
       <Modal

@@ -13,6 +13,7 @@ export const AbogadoNuevaAgendaScreen = StyleSheet.create({
       color: '#1E3A8A',
       marginBottom: 30,
       textAlign: 'center',
+      marginTop: 40,
     },
     formGroup: {
       marginBottom: 20,
@@ -45,7 +46,8 @@ export const AbogadoNuevaAgendaScreen = StyleSheet.create({
     buttonContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginTop: 30,
+      marginTop: 10,
+      marginBottom: 50,
     },
     cancelButton: {
       flex: 1,
@@ -66,5 +68,35 @@ export const AbogadoNuevaAgendaScreen = StyleSheet.create({
     buttonText: {
       fontSize: 16,
       fontWeight: '600',
+      color: '#FFFFFF',
     },
+    buttonTextdos: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: 'black',
+    },
+     datePickerButton: {
+    justifyContent: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 12,
+    backgroundColor: '#f8f9fa',
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+    // Texto dentro del botón del DateTimePicker
+  datePickerText: {
+    fontSize: 16,
+    color: '#333',
+    textAlign: 'left',
+  }, // Estilo para el placeholder cuando no hay fecha seleccionada
+  placeholderText: {
+    color: '#999',
+    fontStyle: 'italic',
+  },
+  
+  // Opcional: contenedor adicional para el picker
+  datePickerContainer: {
+    marginBottom: 15,
+  },
   });
