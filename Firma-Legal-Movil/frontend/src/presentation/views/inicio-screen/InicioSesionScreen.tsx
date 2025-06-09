@@ -57,7 +57,7 @@ const InicioSesionScreen = () => {
       <Text style={styles.or}>o</Text>
 
       {/* Botones de Google y Apple */}
-      <TouchableOpacity style={styles.socialButton}>
+      {/* <TouchableOpacity style={styles.socialButton}>
         <FontAwesome name="google" size={20} color="#DB4437" style={styles.icon} />
         <Text style={styles.socialButtonText}>Continuar con Google</Text>
       </TouchableOpacity>
@@ -65,7 +65,7 @@ const InicioSesionScreen = () => {
       <TouchableOpacity style={styles.socialButton}>
         <FontAwesome name="apple" size={20} color="#000" style={styles.icon} />
         <Text style={styles.socialButtonText}>Continuar con Apple</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/* Texto de políticas */}
       <Text style={styles.policyText}>

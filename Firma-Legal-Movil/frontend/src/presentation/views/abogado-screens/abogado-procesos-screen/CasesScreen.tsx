@@ -162,7 +162,7 @@ const CasesScreen = () => {
       <View style={styles.statsContainer}>
         <View style={styles.statCard}>
           <Text style={styles.statNumber}>{processes.length}</Text>
-          <Text style={styles.statLabel}>Casos totales</Text>
+          <Text style={styles.statLabel}>Procesos totales</Text>
         </View>
         <View style={styles.statCard}>
           <Text style={styles.statNumber}>{processes.filter(p => p.estado === 'activo').length}</Text>
@@ -183,7 +183,7 @@ const CasesScreen = () => {
             onPress={() => navigateToCaseDetail(item.id_proceso)}
           >
             <View style={styles.caseHeader}>
-              <Text style={styles.caseId}>Caso #{item.id_proceso}</Text>
+              <Text style={styles.caseId}>Proceso #{item.id_proceso}</Text>
               <View style={[
                 styles.statusBadge,
                 { backgroundColor: getStatusColor(item.estado) }
@@ -192,7 +192,7 @@ const CasesScreen = () => {
               </View>
             </View>
             
-            <Text style={styles.caseClient}>{getFullName(item.numeroIdentificacionCliente)}</Text>
+            <Text style={styles.caseClient}>{getFullName(item.descripcion)}</Text>
             
             {/* <View style={styles.caseFooter}>
               <Text style={styles.caseDate}>Inicio: {new Date(item.fecha_inicio).toLocaleDateString()}</Text>

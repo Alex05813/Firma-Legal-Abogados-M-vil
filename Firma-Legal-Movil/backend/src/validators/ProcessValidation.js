@@ -3,7 +3,7 @@ import Joi from "joi";
 // Esquema de validación para crear un proceso
 export const createProcesoSchema = Joi.object({
   id_proceso: Joi.number().required().messages({
-    "any.required": "El ID del proceso es obligatorio.",
+    "any.required": "El ID del proceso es obligatori",
     "number.base": "El ID del proceso debe ser un número.",
   }),
 

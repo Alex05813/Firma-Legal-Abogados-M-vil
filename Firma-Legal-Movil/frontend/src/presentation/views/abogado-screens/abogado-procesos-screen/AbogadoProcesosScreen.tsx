@@ -138,7 +138,7 @@ const AbogadoProcesosScreen = () => {
             </View>
             
             <Text style={styles.caseTitle}>{item.title}</Text>
-            <Text style={styles.caseClient}>Cliente: {item.client}</Text>
+            <Text style={styles.caseClient}>{item.client}</Text>
             
             <View style={styles.caseFooter}>
               <View style={[
@@ -160,7 +160,7 @@ const AbogadoProcesosScreen = () => {
         showsVerticalScrollIndicator={false}
       />
       
-      {/* Botón de acción flotante */}
+      Botón de acción flotante
       <TouchableOpacity style={styles.fab} /*onPress={() => navigation.navigate('NewCase')}*/>
         <Text style={styles.fabText}>+ Nuevo caso</Text>
       </TouchableOpacity>
@@ -187,6 +187,8 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 20,
+    // marginTop: StatusBar.currentHeight || 0,
+
   },
   headerTitle: {
     fontSize: 28,
@@ -274,6 +276,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#6b89b3',
     fontWeight: '600',
+    // backgroundColor: 'black',
   },
   priorityBadge: {
     paddingHorizontal: 10,

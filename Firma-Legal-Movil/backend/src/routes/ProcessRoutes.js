@@ -170,13 +170,7 @@ ProcessRouter.get(
  *       500:
  *         description: Error interno en el servidor
  */
-ProcessRouter.put(
-  "/:id_proceso",
-  verifyToken,
-  verifyRole(["asistente"]),
-  validatorHandler(createProcesoSchema, "body"),
-  actualizarProceso
-);
+ProcessRouter.put("/:id_proceso", actualizarProceso);
 
 /**
  * @swagger

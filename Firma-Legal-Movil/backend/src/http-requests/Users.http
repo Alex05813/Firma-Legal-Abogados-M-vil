@@ -50,17 +50,17 @@ GET http://localhost:9000/api/usuarios
 GET http://localhost:9000/api/usuarios/2289897019
 
 ### Actualizar un usuario
-PUT http://localhost:9000/api/usuarios/2289897019
+PUT http://localhost:9000/api/usuarios/1118365949
 Content-Type: application/json
 
 {
-  "numeroIdentificacion": "2289897019",
-  "nombres": "Leonardo",
-  "apellidos": "Rivas",
-  "telefono": "3027887963",
-  "email": "leo@gmail.com",
-  "password": "leo123",
-  "id_rol": "1"
+  "numeroIdentificacion": "1118365949",
+  "nombres": "Armando",
+  "apellidos": "Casas",
+  "telefono": "1236547890",
+  "email": "armando.casas@gmail.com",
+  "password": "armando123",
+  "id_rol": "3"
 }
 
 ### Eliminar un usuario

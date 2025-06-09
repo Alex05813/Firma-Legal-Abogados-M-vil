@@ -231,6 +231,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 16,
     paddingHorizontal: 20,
+    marginTop: StatusBar.currentHeight || 0,
   },
   backButton: {
     padding: 4,

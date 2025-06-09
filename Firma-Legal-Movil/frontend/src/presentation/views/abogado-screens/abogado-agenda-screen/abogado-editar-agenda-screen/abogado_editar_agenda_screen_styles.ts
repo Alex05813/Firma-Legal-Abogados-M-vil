@@ -23,6 +23,7 @@ export const AbogadoEditarAgendaScreenStyle = StyleSheet.create({
       alignItems: 'center',
       padding: 16,
       backgroundColor: '#2563EB',
+      marginTop: 25,
     },
     backButton: {
       padding: 8,

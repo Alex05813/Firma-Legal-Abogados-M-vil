@@ -367,7 +367,6 @@ const HomeScreen: React.FC = () => {
             setShowTaskModal(true)
           }}>
           <Text style={styles.capsuleTitle}>📌 Tareas pendientes</Text>
-          <Text style={styles.capsuleSubtitle}>{tasks.length} pendiente(s)</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
@@ -394,7 +393,7 @@ const HomeScreen: React.FC = () => {
           }}
         >
           <Text style={styles.processButtonText}>
-            Presiona aquí para iniciar un proceso y comienza a organizar tu gestión legal
+            Presiona aquí para mirar o editar la informacion de tus procesos
           </Text>
         </TouchableOpacity>
 
@@ -426,7 +425,6 @@ const HomeScreen: React.FC = () => {
             setShowTaskModal(true)
           }}>
           <Text style={styles.capsuleTitle}>Agenda 🗓️</Text>
-          <Text style={styles.capsuleSubtitle}>{tasks.length} pendiente(s)</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
@@ -435,8 +433,7 @@ const HomeScreen: React.FC = () => {
             navigation.navigate('FacturasScreen')
             setShowTaskModal(true)
           }}>
-          <Text style={styles.capsuleTitle}>📌 Factura</Text>
-          <Text style={styles.capsuleSubtitle}>{tasks.length} pendiente(s)</Text>
+          <Text style={styles.capsuleTitle}>💹 Factura</Text>
       </TouchableOpacity>
 
       </View>

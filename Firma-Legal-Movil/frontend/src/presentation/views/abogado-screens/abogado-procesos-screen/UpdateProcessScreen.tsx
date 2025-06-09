@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar, Platform,  ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../../App';
@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { ProcessService } from './ProcessService';
 import { TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { getBaseUrl } from '../../../../domain/services/getBaseUrl';
 
 type UpdateProcessScreenRouteProp = RouteProp<RootStackParamList, 'UpdateProcessScreen'>;
 type UpdateProcessScreenNavigationProp = StackNavigationProp<RootStackParamList, 'UpdateProcessScreen'>;
@@ -195,6 +196,11 @@ const UpdateProcessScreen: React.FC<{ route: UpdateProcessScreenRouteProp, navig
   }
 
   return (
+    <KeyboardAvoidingView 
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 2}
+        >
     <View style={styles.container}>
       <StatusBar backgroundColor="#6b89b3" barStyle="light-content" />
       
@@ -355,6 +361,7 @@ const UpdateProcessScreen: React.FC<{ route: UpdateProcessScreenRouteProp, navig
         </TouchableOpacity>
       </ScrollView>
     </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -396,6 +403,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 16,
     paddingHorizontal: 20,
+    marginTop: StatusBar.currentHeight || 0,
   },
   backButton: {
     padding: 4,
