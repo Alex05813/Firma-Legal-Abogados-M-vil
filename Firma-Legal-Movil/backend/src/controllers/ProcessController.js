@@ -309,32 +309,60 @@ export const get_process_id = async (req, res) => {
     }
 
     // Buscar el proceso con populate para cliente y abogado
-    const process = await Proceso.findOne({ id_proceso: id })
-      .populate("numeroIdentificacionCliente", "nombre apellido")
-      .populate("numeroIdentificacionAbogado", "nombre apellido");
+    const process = await Proceso.findOne({ id_proceso: id });
 
     if (!process) {
       return res.status(404).json({ message: `Proceso no encontrado` });
     }
 
-    // Formatear la respuesta para ser consistente con el frontend
+    // Buscar manualmente el cliente y abogado usando los números de identificación
+    const cliente = await Cliente.findOne({
+      numeroIdentificacion: process.numeroIdentificacionCliente,
+    });
+
+    const abogado = await Abogado.findOne({
+      numeroIdentificacion: process.numeroIdentificacionAbogado,
+    });
+
+    // Buscar información adicional de tipo, subproceso y documento
+    const [tipo, subproceso, documento] = await Promise.all([
+      TipoProcess.findOne({ id_tipo: process.id_tipo }),
+      SubProcess.findOne({ id_subproceso: process.id_subproceso }),
+      DocEsp.findOne({ id_docesp: process.id_docesp }),
+    ]);
+
+    // Formatear la respuesta completa
     const responseData = {
       id_proceso: process.id_proceso,
       descripcion: process.descripcion,
       fecha_inicio: process.fecha_inicio.toISOString(),
       estado: process.estado,
-      numeroIdentificacionCliente: process.numeroIdentificacionCliente
+      numeroIdentificacionCliente: process.numeroIdentificacionCliente,
+      numeroIdentificacionAbogado: process.numeroIdentificacionAbogado,
+      cliente: cliente
         ? {
-            nombre: process.numeroIdentificacionCliente.nombre,
-            apellido: process.numeroIdentificacionCliente.apellido,
+            numeroIdentificacionCliente: cliente.numeroIdentificacion,
+            nombre: cliente.nombre,
+            apellido: cliente.apellido,
+            // Agrega otros campos del cliente que necesites
+            email: cliente.email || null,
+            telefono: cliente.telefono || null,
           }
-        : process.numeroIdentificacionCliente,
-      numeroIdentificacionAbogado: process.numeroIdentificacionAbogado
+        : null,
+      abogado: abogado
         ? {
-            nombre: process.numeroIdentificacionAbogado.nombre,
-            apellido: process.numeroIdentificacionAbogado.apellido,
+            numeroIdentificacionAbogado: abogado.numeroIdentificacion,
+            nombre: abogado.nombre,
+            apellido: abogado.apellido,
+            // Agrega otros campos del abogado que necesites
+            email: abogado.email || null,
+            telefono: abogado.telefono || null,
           }
-        : process.numeroIdentificacionAbogado,
+        : null,
+      tipo: tipo ? tipo.nombre : null,
+      subproceso: subproceso ? subproceso.nombre : null,
+      documento: documento ? documento.nombre : null,
+      // Mantener los IDs originales por si los necesitas
       id_tipo: process.id_tipo,
       id_subproceso: process.id_subproceso,
       id_docesp: process.id_docesp,
@@ -342,8 +370,11 @@ export const get_process_id = async (req, res) => {
 
     res.status(200).json(responseData);
   } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ message: "Error del servidor" });
+    console.error("Error al obtener proceso:", error);
+    res.status(500).json({
+      message: "Error del servidor",
+      error: error.message,
+    });
   }
 };
 

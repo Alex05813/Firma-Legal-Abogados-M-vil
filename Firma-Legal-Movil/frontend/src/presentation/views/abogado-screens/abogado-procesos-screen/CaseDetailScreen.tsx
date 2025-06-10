@@ -147,13 +147,13 @@ useEffect(() => {
           
           <DetailRow 
             icon="person" 
-            title="Cliente" 
+            title="Identificacion del Cliente"
             value={getFullName(process.numeroIdentificacionCliente)} 
           />
           
           <DetailRow 
             icon="person" 
-            title="Abogado" 
+            title="Identificacion del Abogado" 
             value={getFullName(process.numeroIdentificacionAbogado)} 
           />
           

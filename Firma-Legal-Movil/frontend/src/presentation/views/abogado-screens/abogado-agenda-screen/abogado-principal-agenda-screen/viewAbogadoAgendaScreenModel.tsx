@@ -2,27 +2,10 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { getBaseUrl } from '../../../../../domain/services/getBaseUrl';// Definir la interfaz para las agendas
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../../../App';
-import { useNavigation } from '@react-navigation/native';
+import { Agenda } from '../../../../../domain/models/agenda/interface-agenda';
 
-interface Agenda {
-    _id: string;
-    id_agenda: number;
-    fecha: string;
-    hora: string;
-    descripcion: string;
-    estado: string;
-    createdAt: string;
-    updatedAt: string;
-    __v?: number;
-    numeroIdentificacionAbogado?: string;
-    numeroIdentificacionCliente?: string;
-    procesoDescripcion?: string;
-  }
-
-  type AbogadoAgendaRouteProp = RouteProp<RootStackParamList, 'AbogadoAgendaScreen'>;
-  
+type AbogadoAgendaRouteProp = RouteProp<RootStackParamList, 'AbogadoAgendaScreen'>;
 
 const AbogadoAgendaViewModel = () => {
     const route = useRoute<AbogadoAgendaRouteProp>();
@@ -40,7 +23,7 @@ const AbogadoAgendaViewModel = () => {
               try {
                 const baseUrl = getBaseUrl();
                   const response = await axios.get(`${baseUrl}/agendas/abogado/${numIdentificacion2}`); // Cambia la URL según tu API
-                  setAgendas(response.data.agendasConProceso || []);                   
+                  setAgendas(response.data.agendasConProceso || "Cargando..");                   
                   // Verifica la estructura de response.data
                   console.log('Respuesta completa:', response.data);                  
 

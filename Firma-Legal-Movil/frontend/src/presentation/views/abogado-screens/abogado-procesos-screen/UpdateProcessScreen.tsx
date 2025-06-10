@@ -248,13 +248,12 @@ const UpdateProcessScreen: React.FC<{ route: UpdateProcessScreenRouteProp, navig
               value={fechaInicio}
               onChangeText={setFechaInicio}
               placeholder="YYYY-MM-DD"
-              keyboardType="numeric"
             />
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Participantes</Text>
+          <Text style={styles.sectionTitle}>Identificacion del Cliente</Text>
           
           <View style={styles.formGroup}>
             <Text style={styles.label}>ID Cliente*</Text>
@@ -272,21 +271,22 @@ const UpdateProcessScreen: React.FC<{ route: UpdateProcessScreenRouteProp, navig
             )}
           </View>
 
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>ID Abogado*</Text>
-            <TextInput
+          {/* <View style={styles.formGroup}> */}
+            {/* <Text style={styles.label}>ID Abogado*</Text> */}
+            {/* <TextInput
               style={styles.input}
               value={abogadoId}
               onChangeText={setAbogadoId}
               placeholder="Número de identificación del abogado"
               keyboardType="numeric"
-            />
-            {typeof processData.numeroIdentificacionAbogado !== 'string' && (
+              editable={false} // Deshabilitado para evitar cambios directos
+            /> */}
+            {/* {typeof processData.numeroIdentificacionAbogado !== 'string' && (
               <Text style={styles.infoText}>
-                Abogado actual: {getFullName(processData.numeroIdentificacionAbogado)}
+                {getFullName(processData.numeroIdentificacionAbogado)}
               </Text>
-            )}
-          </View>
+            )} */}
+          {/* </View> */}
         </View>
 
         <View style={styles.section}>
@@ -314,7 +314,7 @@ const UpdateProcessScreen: React.FC<{ route: UpdateProcessScreenRouteProp, navig
             />
           </View>
 
-          <View style={styles.formGroup}>
+          {/* <View style={styles.formGroup}>
             <Text style={styles.label}>Documento Especial</Text>
             <TextInput
               style={styles.input}
@@ -323,7 +323,7 @@ const UpdateProcessScreen: React.FC<{ route: UpdateProcessScreenRouteProp, navig
               placeholder="ID del documento especial"
               keyboardType="numeric"
             />
-          </View>
+          </View> */}
         </View>
 
         {error && (
@@ -460,6 +460,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 8,
     overflow: 'hidden',
+    paddingBottom: 160,    
   },
   picker: {
     height: 50,

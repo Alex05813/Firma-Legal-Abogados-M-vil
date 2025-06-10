@@ -65,3 +65,5 @@ Content-Type: application/json
 
 ### Eliminar un usuario
 DELETE http://localhost:9000/api/usuarios/1029144521
+
+

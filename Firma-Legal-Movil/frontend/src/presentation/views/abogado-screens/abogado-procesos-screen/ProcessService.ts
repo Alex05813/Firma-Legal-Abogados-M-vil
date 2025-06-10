@@ -32,6 +32,8 @@ export const ProcessService = {
   async getProcessById(id_proceso: number | string) {
     try {
       const response = await axios.get(`${baseurl}/procesos/${id_proceso}`);
+      console.log(`Respuesta del servidor para el proceso ${id_proceso}:`, response.data);
+      
       
       if (!response.data) {
         throw new Error('Respuesta del servidor sin datos');
