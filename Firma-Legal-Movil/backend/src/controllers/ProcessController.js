@@ -5,6 +5,7 @@ import Abogado from "../models/AbogadoModel.js";
 import TipoProcess from "../models/TipoProcessModel.js";
 import DocEsp from "../models/DocEspModel.js";
 import SubProcess from "../models/SubProcessModel.js"; // Agregar esta importación
+import Usuario from "../models/UsersModel.js"; // Importar el modelo de Usuario
 
 // 1. Controlador para crear un proceso
 export const crearProceso = async (req, res) => {
@@ -318,6 +319,11 @@ export const get_process_id = async (req, res) => {
     // Buscar manualmente el cliente y abogado usando los números de identificación
     const cliente = await Cliente.findOne({
       numeroIdentificacion: process.numeroIdentificacionCliente,
+      nombres: process.nombres, // Asegúrate de que este campo exista en el modelo Cliente
+    });
+
+    const nombre_cliente = await Usuario.findOne({
+      nombre_del_cliente: Usuario.nombres,
     });
 
     const abogado = await Abogado.findOne({
@@ -339,6 +345,8 @@ export const get_process_id = async (req, res) => {
       estado: process.estado,
       numeroIdentificacionCliente: process.numeroIdentificacionCliente,
       numeroIdentificacionAbogado: process.numeroIdentificacionAbogado,
+      name_cliente: process.nombres,
+      name_abogado: process.apellidos,
       cliente: cliente
         ? {
             numeroIdentificacionCliente: cliente.numeroIdentificacion,

@@ -84,4 +84,26 @@ export const InicioSesionScreenStyle = StyleSheet.create({
       disabledButton: {
         backgroundColor: '#cccccc',
       },
+      legalContainer: {
+        marginBottom: 20,
+        marginLeft: 10,
+        marginRight: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      legalText: {
+        fontSize: 13,
+        color: '#666',
+        textAlign: 'center',
+        lineHeight: 16,
+      },
+      linkText: {
+        color: '#3b82f6',
+        textDecorationLine: 'underline',
+        fontWeight: '500',
+      },
+      cont1:{
+        marginRight: 30,
+      }
+
 });

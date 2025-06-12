@@ -1,8 +1,11 @@
 ### Obtener un procesos agrupados
-GET http://localhost:9000/api/procesos/
+GET http://localhost:9000/api/procesos
+
+### Obtener un proceso por ID
+GET http://localhost:9000/api/procesos/1013110965
 
 ### Obtener procesos filtrados por el numero de identificación del abogado
-GET http://localhost:9000/api/procesos/abogado/1029144521
+GET http://localhost:9000/api/procesos/abogado/
 
 ### Crear un nuevo proceso
 POST http://localhost:9000/api/procesos

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { InicioSesionScreenStyle as styles } from './inicio_sesion_screen_styles';
 import viewInicioSesionScreenModel from './viewInicioSesionScreenModel';
+import Checkbox from 'expo-checkbox'; // Cambia esta línea
 
 const InicioSesionScreen = () => {
   const {
@@ -12,7 +13,11 @@ const InicioSesionScreen = () => {
     setPassword,
     loading,
     autenticacion,
+    abrirLeyTratamientoDatos,
+    aceptaDatos,
+    setAceptaDatos,
   } = viewInicioSesionScreenModel(); // Importar el modelo de vista
+
 
   return (
     
@@ -42,6 +47,24 @@ const InicioSesionScreen = () => {
         value={password}
         onChangeText={setPassword}
       />
+
+      {/* Texto de aceptación de ley de datos */}
+      <View style={styles.legalContainer}>
+        <Checkbox
+          value={aceptaDatos}
+          onValueChange={setAceptaDatos}
+          color={aceptaDatos ? '#3b82f6' : undefined}
+        />
+  
+        <Text style={styles.legalText}>
+          
+          Acepto el tratamiento de mis datos personales conforme a la{' '}
+          <Text style={styles.linkText} onPress={abrirLeyTratamientoDatos}>
+            Ley 1581 de 2012
+          </Text>
+          {' '}de protección de datos personales.
+        </Text>
+      </View>
 
       {/* Botón continuar */}
       <TouchableOpacity 

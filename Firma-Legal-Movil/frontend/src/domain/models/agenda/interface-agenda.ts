@@ -20,7 +20,7 @@ declare global {
 export interface Agenda {
     _id: string;
     id_agenda: number;
-    fecha: string | Date;
+    fecha: string ;
     hora: string;
     descripcion: string;
     estado: string;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, ToastAndroid } from 'react-native';
+import { Alert, ToastAndroid, Text, Linking } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../App';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +15,8 @@ const viewInicioSesionScreenModel = () => {
     const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+    const [aceptaDatos, setAceptaDatos] = useState(false); // Nuevo estado
+
 
   type NavigationProps = StackNavigationProp<RootStackParamList, 'InicioSesionScreen'>;
 const navigation = useNavigation<NavigationProps>();
@@ -30,11 +32,36 @@ const navigation = useNavigation<NavigationProps>();
   const limpiar_formulario = () =>{
     setEmail('')
     setPassword('')
+    setAceptaDatos(false) // Limpiar el estado de aceptación de datos
   }
+
+  // Función para abrir la ley de tratamiento de datos
+  const abrirLeyTratamientoDatos = async () => {
+    const url = 'http://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981';
+    
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        Alert.alert('Error', 'No se puede abrir el enlace');
+      }
+    } catch (error) {
+      console.error('Error al abrir URL:', error);
+      Alert.alert('Error', 'No se pudo abrir el enlace');
+    }
+  };
 
   const autenticacion = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Todos los campos son obligatorios');
+      return;
+    }
+    if (!aceptaDatos) {
+      Alert.alert(
+        'Términos y condiciones', 
+        'Debes aceptar el tratamiento de datos personales conforme a la Ley 1581 de 2012 para poder iniciar sesión.'
+      );
       return;
     }
 
@@ -108,6 +135,9 @@ const navigation = useNavigation<NavigationProps>();
     handleAppleLogin,
     autenticacion,
     limpiar_formulario,
+    abrirLeyTratamientoDatos,
+    aceptaDatos,
+    setAceptaDatos
   }
 }
 
